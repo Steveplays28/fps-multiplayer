@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="nexlib-godot-template"
+config/name="fps-multiplayer"
 run/main_scene="res://common/scenes/main.tscn"
 config/icon="res://icon.png"
 
