@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Reference Include="NExLib">
-      <HintPath>libraries\nexlib.dll</HintPath>
+      <HintPath>libraries\\nexlib\nexlib.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

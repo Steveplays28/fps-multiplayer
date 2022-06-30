@@ -11,8 +11,13 @@ config_version=4
 [application]
 
 config/name="fps-multiplayer"
+config/description="Unnamed multiplayer FPS game, made in Godot."
 run/main_scene="res://common/scenes/main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+ReferenceManager="res://server/prefabs/autoload/reference_manager.tscn"
 
 [debug]
 
