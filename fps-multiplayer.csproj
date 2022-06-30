@@ -1,0 +1,12 @@
+<Project Sdk="Godot.NET.Sdk/3.3.0">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <RootNamespace>FPSMultiplayer</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="NExLib">
+      <HintPath>libraries\nexlib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

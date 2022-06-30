@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://client/scripts/ClientManager.cs" type="Script" id=2]
+
+[node name="ClientMain" type="Spatial"]
+
+[node name="ClientManager" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.25
+anchor_top = 0.25
+anchor_right = 0.75
+anchor_bottom = 0.75
+__meta__ = {
+"_edit_use_anchors_": false
+}

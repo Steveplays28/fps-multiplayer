@@ -1,0 +1,40 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+[application]
+
+config/name="nexlib-godot-template"
+run/main_scene="res://common/scenes/main.tscn"
+config/icon="res://icon.png"
+
+[debug]
+
+multirun/number_of_windows=2
+multirun/window_distance=700
+multirun/add_custom_args=true
+multirun/first_window_args=""
+multirun/other_window_args="--client"
+
+[display]
+
+window/size/width=768
+window/size/height=432
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/multirun/plugin.cfg" )
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"
