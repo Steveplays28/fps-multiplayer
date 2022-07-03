@@ -1,3 +1,5 @@
+using System;
+using System.Net;
 using Godot;
 using NExLib.Common;
 using NExLib.Server;
@@ -17,6 +19,7 @@ public class ServerManager : Node
 
 		server = new Server(ServerPort);
 		server.LogHelper.Log += Log;
+		server.PacketReceived += PacketReceived;
 		server.Start();
 	}
 
@@ -52,5 +55,10 @@ public class ServerManager : Node
 			GD.PushError(logMessage);
 			label.Text += $"{logMessage}\n";
 		}
+	}
+
+	private void PacketReceived(Packet packet, IPEndPoint clientEndPoint)
+	{
+		Log(LogHelper.LogLevel.Info, Enum.GetName(typeof(ClientPacket), packet.ConnectedMethod));
 	}
 }

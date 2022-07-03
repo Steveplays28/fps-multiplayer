@@ -35,7 +35,7 @@ public class ClientManager : Node
 
 		using (Packet packet = new Packet((int)ClientPacket.KeepAlive))
 		{
-			ReferenceManagerClient.Client.Call(nameof(Client.SendPacket), packet);
+			Client.SendPacket(packet);
 		}
 	}
 

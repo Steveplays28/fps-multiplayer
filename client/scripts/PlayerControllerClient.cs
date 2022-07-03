@@ -11,7 +11,7 @@ public class PlayerControllerClient : Node
 		{
 			packet.Writer.Write(Input.IsActionPressed("move_forward"));
 
-			ReferenceManagerClient.Client.Call(nameof(ClientManager.Client.SendPacket), packet);
+			ReferenceManagerClient.ClientManager.Call(nameof(ClientManager.Client.SendPacket), packet);
 		}
 	}
 }

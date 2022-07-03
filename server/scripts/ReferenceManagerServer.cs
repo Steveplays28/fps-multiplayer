@@ -8,6 +8,6 @@ public class ReferenceManagerServer : Node
 	{
 		base._Ready();
 
-		Player = GetTree().CurrentScene.GetNode<KinematicBody>("Player");
+		// Player = GetTree().CurrentScene.GetNode<KinematicBody>("Player");
 	}
 }
