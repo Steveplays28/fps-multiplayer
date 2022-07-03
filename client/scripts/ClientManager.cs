@@ -7,7 +7,8 @@ public class ClientManager : Node
 	[Export(PropertyHint.PlaceholderText, "For example: 127.0.0.1")] public string ServerIp = "127.0.0.1";
 	[Export(PropertyHint.Range, "0,65535")] public int ServerPort = 26665;
 
-	private Client client;
+	public Client Client { get; private set; }
+
 	private Label label;
 
 	public override void _Ready()
@@ -16,24 +17,34 @@ public class ClientManager : Node
 
 		label = GetNode<Label>("../Label");
 
-		client = new Client();
-		client.LogHelper.Log += Log;
-		client.Connect(ServerIp, ServerPort);
+		Client = new Client();
+		Client.LogHelper.Log += Log;
+		Client.Connect(ServerIp, ServerPort);
 	}
 
 	public override void _Process(float delta)
 	{
 		base._Process(delta);
 
-		client.Tick();
+		Client.Tick();
+	}
+
+	public override void _PhysicsProcess(float delta)
+	{
+		base._PhysicsProcess(delta);
+
+		using (Packet packet = new Packet((int)ClientPacket.KeepAlive))
+		{
+			ReferenceManagerClient.Client.Call(nameof(Client.SendPacket), packet);
+		}
 	}
 
 	public override void _Notification(int what)
 	{
 		if (what == MainLoop.NotificationWmQuitRequest || what == NotificationCrash)
 		{
-			client.Disconnect();
-			client.Close();
+			Client.Disconnect();
+			Client.Close();
 		}
 	}
 

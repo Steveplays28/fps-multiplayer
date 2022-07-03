@@ -1,6 +1,6 @@
 using Godot;
 
-public class ReferenceManager : Node
+public class ReferenceManagerServer : Node
 {
 	public static KinematicBody Player { get; private set; }
 
