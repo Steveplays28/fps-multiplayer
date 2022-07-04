@@ -33,7 +33,7 @@ public class ClientManager : Node
 	{
 		base._PhysicsProcess(delta);
 
-		using (Packet packet = new Packet((int)ClientPacket.KeepAlive))
+		using (Packet packet = new Packet((int)PacketConnectedMethod.KeepAlive))
 		{
 			Client.SendPacket(packet);
 		}

@@ -8,7 +8,8 @@ public class ServerManager : Node
 {
 	[Export(PropertyHint.Range, "0,65535")] public int ServerPort = 26665;
 
-	private Server server;
+	public Server Server { get; private set; }
+
 	private Label label;
 
 	public override void _Ready()
@@ -17,24 +18,24 @@ public class ServerManager : Node
 
 		label = GetNode<Label>("../Label");
 
-		server = new Server(ServerPort);
-		server.LogHelper.Log += Log;
-		server.PacketReceived += PacketReceived;
-		server.Start();
+		Server = new Server(ServerPort);
+		Server.LogHelper.Log += Log;
+		Server.PacketReceived += PacketReceived;
+		Server.Start();
 	}
 
 	public override void _Process(float delta)
 	{
 		base._Process(delta);
 
-		server.Tick();
+		Server.Tick();
 	}
 
 	public override void _Notification(int what)
 	{
 		if (what == NotificationWmQuitRequest || what == NotificationCrash)
 		{
-			server.Stop();
+			Server.Stop();
 		}
 	}
 
@@ -59,6 +60,6 @@ public class ServerManager : Node
 
 	private void PacketReceived(Packet packet, IPEndPoint clientEndPoint)
 	{
-		Log(LogHelper.LogLevel.Info, Enum.GetName(typeof(ClientPacket), packet.ConnectedMethod));
+		Log(LogHelper.LogLevel.Info, Enum.GetName(typeof(PacketConnectedMethod), packet.ConnectedMethod));
 	}
 }

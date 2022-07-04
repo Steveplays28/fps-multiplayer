@@ -1,6 +1,9 @@
+using System.Net;
 using Godot;
+using NExLib.Common;
+using NExLib.Server;
 
-public class PlayerControllerKinematic : KinematicBody
+public class PlayerControllerServer : KinematicBody
 {
 	[Export] public float MaxMovementSpeed = 10f;
 	[Export] public float MaxSprintMovementSpeed = 25f;
@@ -45,6 +48,9 @@ public class PlayerControllerKinematic : KinematicBody
 		animationTree = GetNode<AnimationTree>(AnimationTreeNodePath);
 		floorRayCast = GetNode<RayCast>(FloorRayCastNodePath);
 		climbRayCast = GetNode<RayCast>(ClimbRayCastNodePath);
+
+		Server server = (Server)ReferenceManagerServer.ServerManager.Get(nameof(ServerManager.Server));
+		server.PacketReceived += HandleMovementInput;
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -56,7 +62,6 @@ public class PlayerControllerKinematic : KinematicBody
 
 		HandleGravity(delta);
 		HandleSlideInput();
-		HandleMovementInput(delta);
 		HandleJumpInput(delta);
 		HandleClimb();
 
@@ -169,8 +174,13 @@ public class PlayerControllerKinematic : KinematicBody
 		}
 	}
 
-	private void HandleMovementInput(float delta)
+	private void HandleMovementInput(Packet packet, IPEndPoint clientIPEndPoint)
 	{
+		if (packet.ConnectedMethod != (int)PacketConnectedMethod.Input)
+		{
+			return;
+		}
+
 		float maxMovementSpeed;
 		if (Input.IsActionPressed("sprint"))
 		{
@@ -219,11 +229,11 @@ public class PlayerControllerKinematic : KinematicBody
 		decceleration = IsGrounded() ? decceleration : AirDecceleration;
 		if (inputDirection.x == 0f)
 		{
-			targetVelocity = new Vector3(Mathf.Lerp(targetVelocity.x, 0f, decceleration * delta), targetVelocity.y, targetVelocity.z);
+			targetVelocity = new Vector3(Mathf.Lerp(targetVelocity.x, 0f, decceleration * GetProcessDeltaTime()), targetVelocity.y, targetVelocity.z);
 		}
 		if (inputDirection.z == 0f)
 		{
-			targetVelocity = new Vector3(targetVelocity.x, targetVelocity.y, Mathf.Lerp(targetVelocity.z, 0f, decceleration * delta));
+			targetVelocity = new Vector3(targetVelocity.x, targetVelocity.y, Mathf.Lerp(targetVelocity.z, 0f, decceleration * GetProcessDeltaTime()));
 		}
 
 		if (targetVelocity.Length() > maxMovementSpeed)
