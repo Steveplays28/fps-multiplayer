@@ -1,7 +1,7 @@
 using Godot;
 using SteveUtility;
 
-public class Weapon : Spatial
+public class ServerWeapon : Spatial
 {
 	[Export] public NodePath PlayerNodePath;
 	[Export] public NodePath CameraNodePath;
@@ -21,6 +21,7 @@ public class Weapon : Spatial
 	[Export] public int MagazineAmmoCount = 30;
 	[Export] public int BarrelAmmoCount = 1;
 	[Export] public float ReloadTime = 2f;
+	[Export] public float CrosshairFadeTime = 0.1f;
 
 	private Spatial player;
 	private Camera camera;
@@ -28,6 +29,7 @@ public class Weapon : Spatial
 	private RayCast rayCast;
 	private Particles muzzleFlash;
 	private AnimationTree animationTree;
+	private Vector3 muzzlePosition;
 	private Vector3 initialPosition;
 	private float timeUntilNextShot;
 	private int currentMagazineAmmoCount;
@@ -46,6 +48,7 @@ public class Weapon : Spatial
 		rayCast = GetNode<RayCast>(RayCastNodePath);
 		muzzleFlash = GetNode<Particles>(MuzzleFlashNodePath);
 		animationTree = GetNode<AnimationTree>(AnimationTreeNodePath);
+		muzzlePosition = rayCast.GlobalTransform.origin;
 		initialPosition = Translation;
 		currentMagazineAmmoCount = MagazineAmmoCount;
 		currentBarrelAmmoCount = BarrelAmmoCount;

@@ -16,7 +16,7 @@ public class ServerManager : Node
 	{
 		base._Ready();
 
-		label = GetNode<Label>("../Label");
+		label = GetNode<Label>("DebugLabel");
 
 		Server = new Server(ServerPort);
 		Server.LogHelper.Log += Log;

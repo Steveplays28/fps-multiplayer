@@ -1,9 +1,8 @@
 using System.Net;
 using Godot;
 using NExLib.Common;
-using NExLib.Server;
 
-public class PlayerControllerServer : KinematicBody
+public class ServerPlayerController : KinematicBody
 {
 	[Export] public float MaxMovementSpeed = 10f;
 	[Export] public float MaxSprintMovementSpeed = 25f;
@@ -29,6 +28,7 @@ public class PlayerControllerServer : KinematicBody
 	[Export] private readonly NodePath FloorRayCastNodePath;
 	[Export] private readonly NodePath ClimbRayCastNodePath;
 
+	public int ClientId { get; private set; }
 	public Vector3 Velocity { get; private set; } = Vector3.Zero;
 	public Vector3 VelocityLocal { get; private set; } = Vector3.Zero;
 	public bool IsJumping { get; private set; } = false;
@@ -49,8 +49,7 @@ public class PlayerControllerServer : KinematicBody
 		floorRayCast = GetNode<RayCast>(FloorRayCastNodePath);
 		climbRayCast = GetNode<RayCast>(ClimbRayCastNodePath);
 
-		Server server = (Server)ReferenceManagerServer.ServerManager.Get(nameof(ServerManager.Server));
-		server.PacketReceived += HandleMovementInput;
+		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleMovementInput;
 	}
 
 	public override void _PhysicsProcess(float delta)
