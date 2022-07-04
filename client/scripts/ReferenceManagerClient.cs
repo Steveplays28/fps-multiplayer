@@ -2,12 +2,12 @@ using Godot;
 
 public class ReferenceManagerClient : Node
 {
-	public static Node ClientManager { get; private set; }
+	public static ClientManager ClientManager { get; private set; }
 
 	public override void _Ready()
 	{
 		base._Ready();
 
-		ClientManager = GetTree().CurrentScene.GetNode(nameof(ClientManager));
+		ClientManager = GetTree().CurrentScene.GetNode<ClientManager>(nameof(ClientManager));
 	}
 }

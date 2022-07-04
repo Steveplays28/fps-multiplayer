@@ -124,6 +124,11 @@ public class PlayerControllerServer : KinematicBody
 				animationTree.Set("parameters/time_scale/scale", Mathf.Clamp(time_scale + delta, 0f, 1f));
 			}
 		}
+
+		using (Packet packet = new Packet((int)PacketConnectedMethod.Input))
+		{
+			packet.Writer.Write(Translation);
+		}
 	}
 
 	private void HandleMouseCursorVisibilityInput()
