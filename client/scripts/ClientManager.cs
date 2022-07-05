@@ -1,3 +1,4 @@
+using System.Net;
 using Godot;
 using NExLib.Client;
 using NExLib.Common;
