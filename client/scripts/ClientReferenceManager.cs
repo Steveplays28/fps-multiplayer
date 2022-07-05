@@ -1,6 +1,6 @@
 using Godot;
 
-public class ReferenceManagerClient : Node
+public class ClientReferenceManager : Node
 {
 	public static ClientManager ClientManager { get; private set; }
 
@@ -8,6 +8,6 @@ public class ReferenceManagerClient : Node
 	{
 		base._Ready();
 
-		ClientManager = GetTree().CurrentScene.GetNode<ClientManager>(nameof(ClientManager));
+		ClientManager = GetNode<ClientManager>($"/root/{nameof(ClientManager)}");
 	}
 }

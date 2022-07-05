@@ -1,8 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://common/scripts/SceneLoader.cs" type="Script" id=1]
+[ext_resource path="res://client/prefabs/autoload/client_reference_manager.tscn" type="PackedScene" id=2]
+[ext_resource path="res://client/prefabs/autoload/client_manager.tscn" type="PackedScene" id=3]
+[ext_resource path="res://server/prefabs/autoload/server_reference_manager.tscn" type="PackedScene" id=4]
+[ext_resource path="res://server/prefabs/autoload/server_manager.tscn" type="PackedScene" id=5]
 
 [node name="Main" type="Spatial"]
 
 [node name="SceneLoader" type="Node" parent="."]
 script = ExtResource( 1 )
+ServerAutoLoads = [ ExtResource( 5 ), ExtResource( 4 ) ]
+ClientAutoLoads = [ ExtResource( 3 ), ExtResource( 2 ) ]

@@ -15,7 +15,7 @@ public class ClientManager : Node
 	{
 		base._Ready();
 
-		label = GetNode<Label>("../Label");
+		label = GetNode<Label>("Label");
 
 		Client = new Client();
 		Client.LogHelper.Log += Log;

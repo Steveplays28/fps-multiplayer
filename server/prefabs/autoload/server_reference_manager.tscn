@@ -2,5 +2,5 @@
 
 [ext_resource path="res://server/scripts/ServerReferenceManager.cs" type="Script" id=1]
 
-[node name="ServerReferenceManager" type="Node"]
+[node name="ServerReferenceManager" type="Node" groups=["ServerAutoLoads"]]
 script = ExtResource( 1 )

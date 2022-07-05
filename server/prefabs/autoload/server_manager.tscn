@@ -2,7 +2,7 @@
 
 [ext_resource path="res://server/scripts/ServerManager.cs" type="Script" id=1]
 
-[node name="ServerManager" type="Node"]
+[node name="ServerManager" type="Node" groups=["ServerAutoLoads"]]
 script = ExtResource( 1 )
 
 [node name="DebugLabel" type="Label" parent="."]

@@ -2,13 +2,13 @@ using System.Net;
 using Godot;
 using NExLib.Common;
 
-public class PlayerControllerClient : Spatial
+public class ClientPlayerController : Spatial
 {
 	public override void _Ready()
 	{
 		base._Ready();
 
-		ClientManager clientManager = ReferenceManagerClient.ClientManager;
+		ClientManager clientManager = ClientReferenceManager.ClientManager;
 		clientManager.Client.PacketReceived += HandlePositionPacket;
 	}
 
@@ -23,7 +23,7 @@ public class PlayerControllerClient : Spatial
 			packet.Writer.Write(Input.IsActionPressed("move_right"));
 			packet.Writer.Write(Input.IsActionPressed("move_left"));
 
-			ReferenceManagerClient.ClientManager.Client.SendPacket(packet);
+			ClientReferenceManager.ClientManager.Client.SendPacket(packet);
 		}
 	}
 

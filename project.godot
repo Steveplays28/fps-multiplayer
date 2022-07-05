@@ -15,11 +15,6 @@ config/description="Unnamed multiplayer FPS game, made in Godot."
 run/main_scene="res://common/scenes/main.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-ServerManager="*res://server/prefabs/autoload/server_manager.tscn"
-ServerReferenceManager="*res://server/prefabs/autoload/server_reference_manager.tscn"
-
 [debug]
 
 multirun/number_of_windows=2
@@ -32,6 +27,10 @@ multirun/other_window_args="--client"
 
 window/size/width=768
 window/size/height=432
+
+[editor]
+
+main_run_args="--client"
 
 [editor_plugins]
 
