@@ -48,7 +48,10 @@ public class ClientManager : Node
 
 		if (what == MainLoop.NotificationWmQuitRequest || what == NotificationCrash)
 		{
-			Client.Disconnect();
+			if (Client.IsConnected)
+			{
+				Client.Disconnect();
+			}
 			Client.Close();
 		}
 	}
