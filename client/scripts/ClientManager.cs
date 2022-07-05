@@ -10,16 +10,19 @@ public class ClientManager : Node
 	public Client Client { get; private set; }
 
 	private Label label;
+	private Button connectButton;
 
 	public override void _Ready()
 	{
 		base._Ready();
 
 		label = GetNode<Label>("Label");
+		connectButton = GetNode<Button>("ConnectButton");
+
+		connectButton.Connect("pressed", this, nameof(ConnectButtonPressed));
 
 		Client = new Client();
 		Client.LogHelper.Log += Log;
-		Client.Connect(ServerIp, ServerPort);
 	}
 
 	public override void _Process(float delta)
@@ -33,19 +36,26 @@ public class ClientManager : Node
 	{
 		base._PhysicsProcess(delta);
 
-		using (Packet packet = new Packet((int)PacketConnectedMethod.KeepAlive))
-		{
-			Client.SendPacket(packet);
-		}
+		// using (Packet packet = new Packet((int)PacketConnectedMethod.KeepAlive))
+		// {
+		// 	Client.SendPacket(packet);
+		// }
 	}
 
 	public override void _Notification(int what)
 	{
+		base._Notification(what);
+
 		if (what == MainLoop.NotificationWmQuitRequest || what == NotificationCrash)
 		{
 			Client.Disconnect();
 			Client.Close();
 		}
+	}
+
+	private void ConnectButtonPressed()
+	{
+		Client.Connect(ServerIp, ServerPort);
 	}
 
 	private void Log(LogHelper.LogLevel logLevel, string logMessage)

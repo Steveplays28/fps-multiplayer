@@ -13,3 +13,12 @@ anchor_bottom = 0.75
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ConnectButton" type="Button" parent="."]
+anchor_left = 0.75
+anchor_right = 1.0
+anchor_bottom = 0.1
+text = "Connect to localhost server"
+__meta__ = {
+"_edit_use_anchors_": false
+}

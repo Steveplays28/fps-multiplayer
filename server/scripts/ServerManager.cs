@@ -33,6 +33,8 @@ public class ServerManager : Node
 
 	public override void _Notification(int what)
 	{
+		base._Notification(what);
+
 		if (what == NotificationWmQuitRequest || what == NotificationCrash)
 		{
 			Server.Stop();
