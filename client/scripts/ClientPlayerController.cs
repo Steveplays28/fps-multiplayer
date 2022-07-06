@@ -29,7 +29,6 @@ public class ClientPlayerController : Spatial
 
 			ClientReferenceManager.ClientManager.Client.SendPacket(packet);
 		}
-		GD.Print("eee");
 	}
 
 	private void HandlePositionPacket(Packet packet, IPEndPoint clientIPEndPoint)

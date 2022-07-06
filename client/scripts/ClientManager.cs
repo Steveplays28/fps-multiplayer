@@ -94,7 +94,6 @@ public class ClientManager : Node
 		int clientId = ClientReferenceManager.ClientManager.Client.ClientId;
 		player.ClientId = clientId;
 		Players.Add(clientId, player);
-		GD.Print("connected");
 	}
 
 	private void Disconnected(Packet packet, IPEndPoint serverIPEndPoint)
