@@ -126,7 +126,9 @@ public class ServerPlayerController : KinematicBody
 
 		using (Packet packet = new Packet((int)PacketConnectedMethodExtension.Input))
 		{
-			packet.Writer.Write(Translation);
+			packet.Writer.Write(GlobalTransform.origin);
+
+			ServerReferenceManager.ServerManager.Server.SendPacketTo(packet, ClientId);
 		}
 	}
 

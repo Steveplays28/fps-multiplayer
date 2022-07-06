@@ -18,6 +18,7 @@ public class ServerManager : Node
 
 		Server = new Server(ServerPort);
 		Server.LogHelper.Log += Log;
+		// TODO: Add client connect and client disconnect events
 		Server.Start();
 	}
 
