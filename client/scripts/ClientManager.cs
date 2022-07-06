@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using Godot;
 using NExLib.Client;
@@ -7,8 +8,10 @@ public class ClientManager : Node
 {
 	[Export(PropertyHint.PlaceholderText, "For example: 127.0.0.1")] public string ServerIp = "127.0.0.1";
 	[Export(PropertyHint.Range, "0,65535")] public int ServerPort = 26665;
+	[Export] public PackedScene ClientPlayer;
 
 	public Client Client { get; private set; }
+	public Dictionary<int, Spatial> Players { get; private set; } = new Dictionary<int, Spatial>();
 
 	private Label label;
 	private Button connectButton;
@@ -24,6 +27,8 @@ public class ClientManager : Node
 
 		Client = new Client();
 		Client.LogHelper.Log += Log;
+		Client.Connected += Connected;
+		Client.Disconnected += Disconnected;
 	}
 
 	public override void _Process(float delta)
@@ -57,11 +62,6 @@ public class ClientManager : Node
 		}
 	}
 
-	private void ConnectButtonPressed()
-	{
-		Client.Connect(ServerIp, ServerPort);
-	}
-
 	private void Log(LogHelper.LogLevel logLevel, string logMessage)
 	{
 		if (logLevel == LogHelper.LogLevel.Info)
@@ -79,5 +79,29 @@ public class ClientManager : Node
 			GD.PushError(logMessage);
 			label.Text += $"{logMessage}\n";
 		}
+	}
+
+	private void ConnectButtonPressed()
+	{
+		Client.Connect(ServerIp, ServerPort);
+	}
+
+	private void Connected(Packet packet, IPEndPoint serverIPEndPoint)
+	{
+		ClientPlayerController player = ClientPlayer.Instance<ClientPlayerController>();
+		GetTree().Root.AddChild(player);
+
+		int clientId = ClientReferenceManager.ClientManager.Client.ClientId;
+		player.ClientId = clientId;
+		Players.Add(clientId, player);
+		GD.Print("connected");
+	}
+
+	private void Disconnected(Packet packet, IPEndPoint serverIPEndPoint)
+	{
+		int clientId = packet.Reader.ReadInt32();
+
+		Players[clientId].QueueFree();
+		Players.Remove(clientId);
 	}
 }

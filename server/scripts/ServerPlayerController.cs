@@ -124,7 +124,7 @@ public class ServerPlayerController : KinematicBody
 			}
 		}
 
-		using (Packet packet = new Packet((int)PacketConnectedMethod.Input))
+		using (Packet packet = new Packet((int)PacketConnectedMethodExtension.Input))
 		{
 			packet.Writer.Write(Translation);
 		}
@@ -180,13 +180,21 @@ public class ServerPlayerController : KinematicBody
 
 	private void HandleMovementInput(Packet packet, IPEndPoint clientIPEndPoint)
 	{
-		if (packet.ConnectedMethod != (int)PacketConnectedMethod.Input)
+		if (packet.ConnectedMethod != (int)PacketConnectedMethodExtension.Input)
 		{
 			return;
 		}
 
+		bool moveForwardActionPressed = packet.Reader.ReadBoolean();
+		bool moveBackwardsActionPressed = packet.Reader.ReadBoolean();
+		bool moveRightActionPressed = packet.Reader.ReadBoolean();
+		bool moveLeftActionPressed = packet.Reader.ReadBoolean();
+		bool sprintActionPressed = packet.Reader.ReadBoolean();
+		bool slideActionPressed = packet.Reader.ReadBoolean();
+		bool jumpActionPressed = packet.Reader.ReadBoolean();
+
 		float maxMovementSpeed;
-		if (Input.IsActionPressed("sprint"))
+		if (sprintActionPressed)
 		{
 			maxMovementSpeed = MaxSprintMovementSpeed;
 		}
@@ -199,28 +207,28 @@ public class ServerPlayerController : KinematicBody
 		Vector3 cameraRotationDegrees = camera.RotationDegrees;
 		if (!IsSliding)
 		{
-			if (Input.IsActionPressed("move_forward"))
+			if (moveForwardActionPressed)
 			{
 				inputDirection -= Transform.basis.z;
 			}
-			if (Input.IsActionPressed("move_backwards"))
+			if (moveBackwardsActionPressed)
 			{
 				inputDirection += Transform.basis.z;
 			}
-			if (Input.IsActionPressed("move_right"))
+			if (moveRightActionPressed)
 			{
 				inputDirection += Transform.basis.x;
 
 				cameraRotationDegrees.z = Mathf.Lerp(cameraRotationDegrees.z, Mathf.Clamp(cameraRotationDegrees.z - CameraRollSpeed * maxMovementSpeed, -CameraRollMultiplier * maxMovementSpeed, CameraRollMultiplier * maxMovementSpeed), CameraRollSpeed);
 			}
-			if (Input.IsActionPressed("move_left"))
+			if (moveLeftActionPressed)
 			{
 				inputDirection -= Transform.basis.x;
 
 				cameraRotationDegrees.z = Mathf.Lerp(cameraRotationDegrees.z, Mathf.Clamp(cameraRotationDegrees.z + CameraRollSpeed * maxMovementSpeed, -CameraRollMultiplier * maxMovementSpeed, CameraRollMultiplier * maxMovementSpeed), CameraRollSpeed);
 			}
 		}
-		if (!Input.IsActionPressed("move_right") && !Input.IsActionPressed("move_left"))
+		if (!moveRightActionPressed && !moveLeftActionPressed)
 		{
 			cameraRotationDegrees.z = Mathf.Lerp(camera.RotationDegrees.z, 0f, CameraRollSpeed);
 		}

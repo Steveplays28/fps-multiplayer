@@ -4,32 +4,37 @@ using NExLib.Common;
 
 public class ClientPlayerController : Spatial
 {
+	public int ClientId;
+
 	public override void _Ready()
 	{
 		base._Ready();
 
-		ClientManager clientManager = ClientReferenceManager.ClientManager;
-		clientManager.Client.PacketReceived += HandlePositionPacket;
+		ClientReferenceManager.ClientManager.Client.PacketReceived += HandlePositionPacket;
 	}
 
 	public override void _PhysicsProcess(float delta)
 	{
 		base._Process(delta);
 
-		using (Packet packet = new Packet((int)PacketConnectedMethod.Input))
+		using (Packet packet = new Packet((int)PacketConnectedMethodExtension.Input))
 		{
 			packet.Writer.Write(Input.IsActionPressed("move_forward"));
 			packet.Writer.Write(Input.IsActionPressed("move_backwards"));
 			packet.Writer.Write(Input.IsActionPressed("move_right"));
 			packet.Writer.Write(Input.IsActionPressed("move_left"));
+			packet.Writer.Write(Input.IsActionPressed("sprint"));
+			packet.Writer.Write(Input.IsActionPressed("slide"));
+			packet.Writer.Write(Input.IsActionJustPressed("jump"));
 
 			ClientReferenceManager.ClientManager.Client.SendPacket(packet);
 		}
+		GD.Print("eee");
 	}
 
 	private void HandlePositionPacket(Packet packet, IPEndPoint clientIPEndPoint)
 	{
-		if (packet.ConnectedMethod != (int)PacketConnectedMethod.Input)
+		if (packet.ConnectedMethod != (int)PacketConnectedMethodExtension.Input)
 		{
 			return;
 		}
