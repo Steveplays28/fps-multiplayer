@@ -18,4 +18,18 @@ public static class BinaryExtensions
 		writer.Write(vector3.y);
 		writer.Write(vector3.z);
 	}
+
+	public static Vector2 ReadVector2(this BinaryReader reader)
+	{
+		float x = reader.ReadSingle();
+		float y = reader.ReadSingle();
+
+		return new Vector2(x, y);
+	}
+
+	public static void Write(this BinaryWriter writer, Vector2 vector2)
+	{
+		writer.Write(vector2.x);
+		writer.Write(vector2.y);
+	}
 }

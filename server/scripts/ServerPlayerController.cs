@@ -14,7 +14,6 @@ public class ServerPlayerController : KinematicBody
 	[Export(PropertyHint.Range, "0, 100")] public float Decceleration = 10f;
 	[Export(PropertyHint.Range, "0, 100")] public float AirDecceleration = 0.5f;
 	[Export(PropertyHint.Range, "0, 100")] public float SlideDecceleration = 0.5f;
-	[Export] public Vector2 Sensitivity = new Vector2(1f, 1f);
 	[Export] public float MaxVerticalRotation = 90f;
 	[Export] public float JumpLength = 0.25f;
 	[Export] public float JumpSpeed = 100f;
@@ -23,7 +22,7 @@ public class ServerPlayerController : KinematicBody
 	[Export(PropertyHint.Range, "0, 100")] public float CameraRollSpeed = 0.1f;
 	[Export(PropertyHint.Range, "0, 100")] public float ClimbHeight = 10f;
 	[Export(PropertyHint.Range, "0, 100")] public float ClimbLunge = 10f;
-	[Export] private readonly NodePath CameraNodePath;
+	[Export] private readonly NodePath CameraNodePath = nameof(Camera);
 	[Export] private readonly string AnimationTreeNodePath;
 	[Export] private readonly NodePath FloorRayCastNodePath;
 	[Export] private readonly NodePath ClimbRayCastNodePath;
@@ -49,15 +48,15 @@ public class ServerPlayerController : KinematicBody
 		floorRayCast = GetNode<RayCast>(FloorRayCastNodePath);
 		climbRayCast = GetNode<RayCast>(ClimbRayCastNodePath);
 
-		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleMovementInput;
+		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleMovementInputPacket;
+		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleMouseInputPacket;
 	}
 
 	public override void _PhysicsProcess(float delta)
 	{
 		base._PhysicsProcess(delta);
 
-		HandleMouseCursorVisibilityInput();
-		HandleRestartInput();
+		// HandleRestartInput();
 
 		HandleGravity(delta);
 		HandleSlideInput();
@@ -67,23 +66,6 @@ public class ServerPlayerController : KinematicBody
 		ApplyVelocity(delta);
 	}
 
-	public override void _Input(InputEvent inputEvent)
-	{
-		base._Input(inputEvent);
-
-		// Mouse input
-		if (inputEvent is InputEventMouseMotion)
-		{
-			InputEventMouseMotion inputEventMouseMotion = inputEvent as InputEventMouseMotion;
-
-			camera.RotateX(Mathf.Deg2Rad(-inputEventMouseMotion.Relative.y * Sensitivity.x));
-			RotateY(Mathf.Deg2Rad(-inputEventMouseMotion.Relative.x * Sensitivity.y));
-
-			Vector3 cameraRotationClamped = camera.RotationDegrees;
-			cameraRotationClamped.x = Mathf.Clamp(cameraRotationClamped.x, -MaxVerticalRotation, MaxVerticalRotation);
-			camera.RotationDegrees = cameraRotationClamped;
-		}
-	}
 
 	public bool IsGrounded()
 	{
@@ -132,27 +114,32 @@ public class ServerPlayerController : KinematicBody
 		}
 	}
 
-	private void HandleMouseCursorVisibilityInput()
-	{
-		if (Input.IsActionJustPressed("toggle_mouse_cursor_visibility"))
-		{
-			if (Input.GetMouseMode() == Input.MouseMode.Visible)
-			{
-				Input.SetMouseMode(Input.MouseMode.Captured);
-			}
-			else
-			{
-				Input.SetMouseMode(Input.MouseMode.Visible);
-			}
-		}
-	}
-
 	private void HandleRestartInput()
 	{
 		if (Input.IsActionJustPressed("restart"))
 		{
 			GetTree().ReloadCurrentScene();
 		}
+	}
+
+	private void HandleMouseInputPacket(Packet packet, IPEndPoint clientIpEndPoint)
+	{
+		if (packet.ConnectedMethod != (int)PacketConnectedMethodExtension.MouseInput)
+		{
+			return;
+		}
+
+		// Read mouse input packet
+		Vector2 mouseMotion = packet.Reader.ReadVector2();
+
+		// Rotate camera and player
+		camera.RotateX(Mathf.Deg2Rad(mouseMotion.x));
+		RotateY(Mathf.Deg2Rad(mouseMotion.y));
+
+		// Clamp camera vertical rotation
+		Vector3 cameraRotationClamped = camera.RotationDegrees;
+		cameraRotationClamped.x = Mathf.Clamp(cameraRotationClamped.x, -MaxVerticalRotation, MaxVerticalRotation);
+		camera.RotationDegrees = cameraRotationClamped;
 	}
 
 	private void HandleGravity(float delta)
@@ -180,7 +167,7 @@ public class ServerPlayerController : KinematicBody
 		}
 	}
 
-	private void HandleMovementInput(Packet packet, IPEndPoint clientIPEndPoint)
+	private void HandleMovementInputPacket(Packet packet, IPEndPoint clientIPEndPoint)
 	{
 		if (packet.ConnectedMethod != (int)PacketConnectedMethodExtension.Input)
 		{
