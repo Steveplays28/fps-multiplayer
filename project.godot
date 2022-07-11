@@ -28,13 +28,17 @@ multirun/other_window_args=""
 window/size/width=768
 window/size/height=432
 
+[dreadpons_spatial_gardener]
+
+input_and_ui/brush_property_edit_button=2
+
 [editor]
 
 main_run_args="--client"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/multirun/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/multirun/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg" )
 
 [input]
 
@@ -106,4 +110,6 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+threads/thread_model=2
+quality/filters/msaa=3
 environment/default_environment="res://default_env.tres"

@@ -1,0 +1,11 @@
+[gd_resource type="QuadMesh" load_steps=3 format=2]
+
+[ext_resource path="res://common/resources/textures/grass/grass.png" type="Texture" id=1]
+
+[sub_resource type="SpatialMaterial" id=9]
+flags_transparent = true
+params_depth_draw_mode = 3
+albedo_texture = ExtResource( 1 )
+
+[resource]
+material = SubResource( 9 )

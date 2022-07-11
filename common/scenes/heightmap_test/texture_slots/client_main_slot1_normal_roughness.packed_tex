@@ -1,0 +1,8 @@
+{
+	"contains_albedo": false,
+	"resolution": 4096,
+	"src": {
+		"a": "res://common/resources/textures/rocks_ground/rocks_ground_roughness_4k.jpg",
+		"rgb": "res://common/resources/textures/rocks_ground/rocks_ground_normal_opengl_4k.jpg"
+	}
+}
