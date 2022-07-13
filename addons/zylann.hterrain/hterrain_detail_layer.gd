@@ -49,7 +49,7 @@ export(Texture) var texture : Texture setget set_texture, get_texture
 # How far detail meshes can be seen.
 # TODO Improve speed of _get_chunk_aabb() so we can increase the limit
 # See https://github.com/Zylann/godot_heightmap_plugin/issues/155
-export(float, 1.0, 100000.0) \
+export(float, 1.0, 200.0) \
 	var view_distance := 100.0 setget set_view_distance, get_view_distance
 
 # Custom shader to replace the default one.
@@ -58,6 +58,7 @@ export(Shader) \
 
 # Density modifier, to make more or less detail meshes appear overall.
 export(float, 0, 10) var density := 4.0 setget set_density, get_density
+export(float, 0, 1) var scale_randomness := 0.5 setget set_scale_randomness, get_scale_randomness
 
 # Mesh used for every detail instance (for example, every grass patch).
 # If not assigned, an internal quad mesh will be used.
@@ -286,6 +287,14 @@ func set_density(v: float):
 
 func get_density() -> float:
 	return density
+
+
+func set_scale_randomness(v: float):
+	scale_randomness = v
+	_multimesh_need_regen = true
+	
+func get_scale_randomness() -> float:
+	return scale_randomness
 
 
 # Updates texture references and values that come from the terrain itself.
@@ -569,7 +578,7 @@ func _regen_multimesh():
 	# We modify the existing multimesh instead of replacing it.
 	# DirectMultiMeshInstance does not keep a strong reference to them,
 	# so replacing would break pooled instances.
-	_generate_multimesh(CHUNK_SIZE, density, _get_used_mesh(), _multimesh)
+	_generate_multimesh(CHUNK_SIZE, density, scale_randomness, _get_used_mesh(), _multimesh)
 
 
 func is_layer_index_valid() -> bool:
@@ -599,11 +608,11 @@ func _get_configuration_warning() -> String:
 	return ""
 
 
-static func _generate_multimesh(resolution: int, density: float, mesh: Mesh, multimesh: MultiMesh):
+static func _generate_multimesh(resolution: int, density: float, scale_randomness: float, mesh: Mesh, multimesh: MultiMesh):
 	assert(multimesh != null)
 		
 	var position_randomness = 0.5
-	var scale_randomness = 0.0
+#	var scale_randomness = 0.5
 	#var color_randomness = 0.5
 
 	var cell_count = resolution * resolution

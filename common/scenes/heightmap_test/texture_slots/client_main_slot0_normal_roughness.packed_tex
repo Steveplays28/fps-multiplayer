@@ -1,8 +1,0 @@
-{
-	"contains_albedo": false,
-	"resolution": 4096,
-	"src": {
-		"a": "res://common/resources/textures/forest_ground/forest_ground_01_rough_4k.jpg",
-		"rgb": "res://common/resources/textures/forest_ground/forest_ground_01_nor_gl_4k.jpg"
-	}
-}

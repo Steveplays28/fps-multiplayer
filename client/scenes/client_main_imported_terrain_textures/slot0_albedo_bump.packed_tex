@@ -1,0 +1,8 @@
+{
+	"contains_albedo": true,
+	"resolution": 4096,
+	"src": {
+		"a": "res://client/resources/textures/forest_ground/forest_ground_01_disp_4k.png",
+		"rgb": "res://client/resources/textures/forest_ground/forest_ground_01_diff_4k.jpg"
+	}
+}
