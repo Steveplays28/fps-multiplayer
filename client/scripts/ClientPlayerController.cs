@@ -57,13 +57,13 @@ public class ClientPlayerController : Spatial
 	{
 		if (Input.IsActionJustPressed("toggle_mouse_cursor_visibility"))
 		{
-			if (Input.GetMouseMode() == Input.MouseMode.Visible)
+			if (Input.MouseMode == Input.MouseModeEnum.Visible)
 			{
-				Input.SetMouseMode(Input.MouseMode.Captured);
+				Input.MouseMode = Input.MouseModeEnum.Captured;
 			}
 			else
 			{
-				Input.SetMouseMode(Input.MouseMode.Visible);
+				Input.MouseMode = Input.MouseModeEnum.Visible;
 			}
 		}
 	}

@@ -1,11 +1,15 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=1]
-[ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=2]
-[ext_resource path="res://client/scenes/client_main_hterrain/data.hterrain" type="Resource" id=3]
+[ext_resource path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_LOD_variant.gd" type="Script" id=1]
+[ext_resource path="res://addons/dreadpon.spatial_gardener/arborist/mmi_octree/mmi_octree_manager.gd" type="Script" id=2]
+[ext_resource path="res://addons/dreadpon.spatial_gardener/arborist/mmi_octree/mmi_octree_node.gd" type="Script" id=3]
 [ext_resource path="res://client/scenes/client_main_imported_terrain_textures/slot0_normal_roughness.packed_tex" type="Texture" id=4]
 [ext_resource path="res://client/scenes/client_main_imported_terrain_textures/slot0_albedo_bump.packed_tex" type="Texture" id=5]
+[ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=6]
+[ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=7]
+[ext_resource path="res://client/scenes/client_main_hterrain/data.hterrain" type="Resource" id=8]
 [ext_resource path="res://addons/dreadpon.spatial_gardener/gardener/gardener.gd" type="Script" id=9]
+[ext_resource path="res://client/prefabs/tree_oak.tscn" type="PackedScene" id=11]
 [ext_resource path="res://addons/dreadpon.spatial_gardener/arborist/arborist.gd" type="Script" id=13]
 
 [sub_resource type="ProceduralSky" id=3]
@@ -19,7 +23,6 @@ fog_sun_amount = 0.5
 fog_depth_begin = 100.0
 fog_depth_end = 500.0
 tonemap_mode = 3
-ssao_enabled = true
 ssao_quality = 2
 dof_blur_far_distance = 200.0
 dof_blur_far_transition = 80.0
@@ -37,8 +40,50 @@ extents = Vector3( 0.5, 0.5, 0.5 )
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 1, 1, 1 )
 
-[sub_resource type="Resource" id=7]
+[sub_resource type="Resource" id=1]
+resource_name = "Greenhouse_LODVariant"
+script = ExtResource( 1 )
+__meta__ = {
+"class": "Greenhouse_LODVariant"
+}
+spawned_spatial = ExtResource( 11 )
+
+[sub_resource type="Resource" id=842]
+resource_name = "MMIOctreeNode"
+script = ExtResource( 3 )
+__meta__ = {
+"class": "MMIOctreeNode"
+}
+members = [  ]
+child_nodes = [  ]
+max_members = 75
+min_leaf_extent = 1.0
+octant = -1
+is_leaf = true
+center_pos = Vector3( -1, -85, 255 )
+extent = 256.0
+bounds = AABB( -257, -341, -1, 512, 512, 512 )
+max_bounds_to_center_dist = 443.405
+min_bounds_to_center_dist = 256.0
+active_LOD_index = 0
+MMI_name = "MultiMeshInstance"
+
+[sub_resource type="Resource" id=1154]
+resource_name = "MMIOctreeManager"
 script = ExtResource( 2 )
+__meta__ = {
+"class": "MMIOctreeManager"
+}
+root_octree_node = SubResource( 842 )
+LOD_variants = [ SubResource( 1 ) ]
+LOD_max_distance = 10.0
+LOD_kill_distance = -1.0
+
+[sub_resource type="MultiMesh" id=1155]
+transform_format = 1
+
+[sub_resource type="Resource" id=7]
+script = ExtResource( 7 )
 mode = 0
 textures = [ [ ExtResource( 5 ) ], [ ExtResource( 4 ) ] ]
 
@@ -78,14 +123,17 @@ script = ExtResource( 13 )
 __meta__ = {
 "class": "Arborist"
 }
-octree_managers = [  ]
+octree_managers = [ SubResource( 1154 ) ]
 
 [node name="MMI_container" type="Spatial" parent="Gardener/Arborist"]
 
+[node name="MultiMeshInstance" type="MultiMeshInstance" parent="Gardener/Arborist/MMI_container"]
+multimesh = SubResource( 1155 )
+
 [node name="HTerrain" type="Spatial" parent="."]
-script = ExtResource( 1 )
+script = ExtResource( 6 )
 lod_scale = 2.0
-_terrain_data = ExtResource( 3 )
+_terrain_data = ExtResource( 8 )
 chunk_size = 32
 collision_enabled = true
 collision_layer = 1
