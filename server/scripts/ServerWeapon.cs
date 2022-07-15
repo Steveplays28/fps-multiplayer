@@ -79,7 +79,7 @@ public class ServerWeapon : Spatial
 
 	private void ToggleAimDownSight()
 	{
-		Tween tween = this.CreateTween();
+		SceneTreeTween tween = CreateTween();
 
 		if (isAimingDownSight)
 		{

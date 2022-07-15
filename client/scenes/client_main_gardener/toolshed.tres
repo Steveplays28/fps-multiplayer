@@ -10,7 +10,7 @@ __meta__ = {
 "class": "Toolshed_Brush"
 }
 behavior/behavior_brush_type = 1
-shape/shape_size = 80.86
+shape/shape_size = 23.41
 behavior/behavior_strength = 1.0
 
 [sub_resource type="Resource" id=1]
@@ -20,7 +20,7 @@ __meta__ = {
 "class": "Toolshed_Brush"
 }
 behavior/behavior_brush_type = 0
-shape/shape_size = 17.02
+shape/shape_size = 69.15
 behavior/behavior_strength = 1.0
 
 [sub_resource type="Resource" id=3]
