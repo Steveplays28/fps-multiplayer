@@ -71,7 +71,7 @@ func _remove_panels():
 func _unhandled_input(event):	
 	if event is InputEventKey:
 		if event.pressed and event.scancode == KEY_F4:
-			if event.alt == false && event.shift == false event.control == false:
+			if event.alt == false && event.shift == false && event.control == false:
 				_multirun_pressed()
 
 func _add_tooblar_button(action:String, icon_normal, icon_pressed):
