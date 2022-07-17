@@ -5,6 +5,9 @@ uniform sampler2D normal_map;
 uniform float height_scale = 1.0;
 
 uniform sampler2D albedo_tex: hint_albedo;
+uniform float metallic = 0.0;
+uniform float roughness = 1.0;
+uniform float specular = 0.5;
 uniform vec2 uv_scale = vec2(1.0, 1.0);
 
 vec3 unpack_normal_map(vec4 rgba) {
@@ -69,7 +72,7 @@ void vertex() {
 		terrain_normal.x, 
 		terrain_normal.y, 
 		terrain_normal.z));
-	NORMAL = (INV_CAMERA_MATRIX * (WORLD_MATRIX * vec4(normal, 0.0))).xyz;
+	NORMAL = ((WORLD_MATRIX * -1.0 * vec4(normal, 0.0))).xyz * ((WORLD_MATRIX * 1.0 * vec4(normal, 0.0))).xyz * mat3(vec3(2), vec3(1), vec3(1));
 }
 
 void fragment() {
@@ -77,4 +80,7 @@ void fragment() {
 	uv *= uv_scale;
 	
 	ALBEDO = texture_no_tile(albedo_tex, uv).rgb;
+	METALLIC = metallic;
+	ROUGHNESS = roughness;
+	SPECULAR = specular;
 }
