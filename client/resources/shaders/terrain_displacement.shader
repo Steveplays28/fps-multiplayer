@@ -54,9 +54,22 @@ void vertex() {
 	float height = texture(height_map, UV).x;
 	VERTEX.y += height * height_scale;
 
-	vec4 packed_normal_map = texture(normal_map, UV);
-	vec3 unpacked_normal_map = unpack_normal_map(packed_normal_map);
-	NORMAL = unpacked_normal_map * height_scale;
+//	vec4 packed_normal_map = texture(normal_map, UV);
+//	vec3 unpacked_normal_map = unpack_normal_map(packed_normal_map);
+//	NORMAL = unpacked_normal_map * height_scale;
+
+	vec3 terrain_normal = unpack_normal_map(texture(normal_map, UV)) * vec3(1, 1, -1);
+
+	// Combine terrain normals with detail normals (not sure if correct but looks ok)
+//	vec3 normal = normalize(vec3(
+//		terrain_normal.x + ground_normal.x, 
+//		terrain_normal.y, 
+//		terrain_normal.z + ground_normal.z));
+	vec3 normal = normalize(vec3(
+		terrain_normal.x, 
+		terrain_normal.y, 
+		terrain_normal.z));
+	NORMAL = (INV_CAMERA_MATRIX * (WORLD_MATRIX * vec4(normal, 0.0))).xyz;
 }
 
 void fragment() {

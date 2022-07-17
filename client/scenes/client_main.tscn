@@ -33,7 +33,6 @@ environment = SubResource( 4 )
 transform = Transform( -1, -1.42109e-14, -8.74227e-08, -4.37114e-08, 0.866025, 0.5, 7.57103e-08, 0.5, -0.866025, 0, 0, 0 )
 light_energy = 2.0
 shadow_enabled = true
-shadow_reverse_cull_face = true
 directional_shadow_blend_splits = true
 directional_shadow_max_distance = 500.0
 
