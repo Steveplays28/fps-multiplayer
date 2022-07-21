@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://client/prefabs/clipmap.tscn" type="PackedScene" id=1]
-[ext_resource path="res://client/resources/materials/ocean.material" type="Material" id=2]
+[ext_resource path="res://client/resources/materials/water.material" type="Material" id=2]
+[ext_resource path="res://client/prefabs/client_player.tscn" type="PackedScene" id=3]
 
 [sub_resource type="ProceduralSky" id=3]
 
@@ -20,15 +21,14 @@ dof_blur_far_transition = 80.0
 dof_blur_far_quality = 2
 dof_blur_near_quality = 2
 glow_enabled = true
+glow_strength = 0.75
 glow_bloom = 0.25
 glow_bicubic_upscale = true
 adjustment_enabled = true
 adjustment_saturation = 1.25
 
 [sub_resource type="PlaneMesh" id=5]
-size = Vector2( 200, 200 )
-subdivide_width = 32
-subdivide_depth = 32
+size = Vector2( 1000, 1000 )
 
 [node name="ClientMain" type="Spatial"]
 
@@ -38,9 +38,11 @@ environment = SubResource( 4 )
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( -1, 2.26267e-08, -8.44439e-08, 0, 0.965926, 0.258819, 8.74228e-08, 0.258819, -0.965926, 0, 0, 0 )
 shadow_enabled = true
-shadow_bias = 4.0
+shadow_bias = 0.0
+shadow_reverse_cull_face = true
+directional_shadow_split_3 = 0.4
 directional_shadow_blend_splits = true
-directional_shadow_max_distance = 500.0
+directional_shadow_normal_bias = 0.0
 
 [node name="Clipmap" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0 )
@@ -48,3 +50,252 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0 )
 [node name="Water" type="MeshInstance" parent="."]
 mesh = SubResource( 5 )
 material/0 = ExtResource( 2 )
+
+[node name="CSGBox" type="CSGBox" parent="."]
+transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 62.2254, 5.14287, -31.8635 )
+width = 21.0
+height = 7.0
+depth = 1.0
+
+[node name="ClientPlayer" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 95, 2, -55 )
+
+[node name="CSGHouse" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, -44 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGBox" type="CSGBox" parent="CSGHouse"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGHouse"]
+transform = Transform( 7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGHouse"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGHouse"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGHouse2" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 82, 0, -62 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGBox" type="CSGBox" parent="CSGHouse2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGHouse2"]
+transform = Transform( 7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGHouse2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGHouse2"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGHouse3" type="Spatial" parent="."]
+transform = Transform( 0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 102, 0, -66 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGBox" type="CSGBox" parent="CSGHouse3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGHouse3"]
+transform = Transform( 7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGHouse3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGHouse3"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGHouse4" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, -46 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGBox" type="CSGBox" parent="CSGHouse4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGHouse4"]
+transform = Transform( 7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGHouse4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGHouse4"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGHouse5" type="Spatial" parent="."]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 122, 0, -50 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGBox" type="CSGBox" parent="CSGHouse5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGHouse5"]
+transform = Transform( 7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGHouse5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGHouse5"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGHouse6" type="Spatial" parent="."]
+transform = Transform( -0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 124, 0, -68 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGBox" type="CSGBox" parent="CSGHouse6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGHouse6"]
+transform = Transform( 7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGHouse6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGHouse6"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGHouse7" type="Spatial" parent="."]
+transform = Transform( 0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, 0.258819, 90.0479, 0, -21.6366 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGBox" type="CSGBox" parent="CSGHouse7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGHouse7"]
+transform = Transform( 7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGHouse7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGHouse7"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGHouse8" type="Spatial" parent="."]
+transform = Transform( 1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, 1, 105.952, 0, -30.3634 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CSGBox" type="CSGBox" parent="CSGHouse8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGHouse8"]
+transform = Transform( 7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGHouse8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 4 )
+width = 9.0
+height = 7.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGHouse8"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5, 0 )
+width = 9.0
+height = 7.0
+depth = 1.0

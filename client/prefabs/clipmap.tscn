@@ -4,6 +4,7 @@
 [ext_resource path="res://client/resources/materials/terrain_displacement.material" type="Material" id=2]
 
 [sub_resource type="PlaneMesh" id=1]
+size = Vector2( 10, 10 )
 subdivide_width = 128
 subdivide_depth = 128
 
