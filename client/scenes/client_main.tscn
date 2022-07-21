@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://client/prefabs/clipmap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://client/resources/materials/water.material" type="Material" id=2]
-[ext_resource path="res://client/prefabs/client_player.tscn" type="PackedScene" id=3]
 
 [sub_resource type="ProceduralSky" id=3]
 
@@ -56,9 +55,6 @@ transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819,
 width = 21.0
 height = 7.0
 depth = 1.0
-
-[node name="ClientPlayer" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 95, 2, -55 )
 
 [node name="CSGHouse" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, -44 )
@@ -299,3 +295,8 @@ transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, -4, 5.5
 width = 9.0
 height = 7.0
 depth = 1.0
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.848048, 0.110176, 0.518339, 0, 0.978148, -0.207912, -0.529919, 0.176319, 0.829516, 32.2, 1, 20.7 )
+fov = 90.0
+far = 1000.0
