@@ -12,7 +12,7 @@ uniform sampler2D texture_refraction;
 uniform float refraction : hint_range(-16, 16);
 uniform vec4 refraction_texture_channel;
 uniform sampler2D texture_normal : hint_normal;
-uniform float normal_scale : hint_range(-16, 16) = 0.75;
+uniform float normal_scale : hint_range(-16, 16) = 1.0;
 uniform float proximity_fade_distance = 0.25;
 uniform vec3 uv1_scale;
 uniform vec3 uv1_offset;
@@ -35,7 +35,7 @@ void fragment() {
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
 	SPECULAR = specular;
-	NORMALMAP = texture(texture_normal, base_uv).rgb * texture(texture_normal, base_uv_negative).rgb;
+	NORMALMAP = mix(texture(texture_normal, base_uv).rgb, texture(texture_normal, base_uv_negative).rgb, 0.5);
 	NORMALMAP_DEPTH = normal_scale;
 
 	// Emmission and transparency
