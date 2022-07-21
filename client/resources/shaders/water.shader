@@ -30,7 +30,7 @@ void fragment() {
 	vec2 base_uv_negative = UV + (water_direction * TIME * 0.001 * wave_2_speed);
 
 	// Material properties
-	vec4 albedo_tex = texture(texture_albedo, base_uv);
+	vec4 albedo_tex = mix(texture(texture_albedo, base_uv), texture(texture_albedo, base_uv_negative), 0.5);
 	ALBEDO = albedo.rgb * albedo_tex.rgb;
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
@@ -42,8 +42,8 @@ void fragment() {
 	vec3 unpacked_normal = NORMALMAP;
 	unpacked_normal.xy = unpacked_normal.xy * 2.0 - 1.0;
 	unpacked_normal.z = sqrt(max(0.0, 1.0 - dot(unpacked_normal.xy, unpacked_normal.xy)));
-	vec3 ref_normal = normalize(mix(NORMAL,TANGENT * unpacked_normal.x + BINORMAL * unpacked_normal.y + NORMAL * unpacked_normal.z,NORMALMAP_DEPTH));
-	vec2 ref_ofs = SCREEN_UV - ref_normal.xy * dot(texture(texture_refraction, base_uv), refraction_texture_channel) * refraction;
+	vec3 ref_normal = normalize(mix(NORMAL, TANGENT * unpacked_normal.x + BINORMAL * unpacked_normal.y + NORMAL * unpacked_normal.z,NORMALMAP_DEPTH));
+	vec2 ref_ofs = SCREEN_UV - ref_normal.xy * dot(mix(texture(texture_refraction, base_uv), texture(texture_refraction, base_uv_negative), 0.5), refraction_texture_channel) * refraction;
 	float ref_amount = 1.0 - albedo.a * albedo_tex.a;
 	EMISSION += textureLod(SCREEN_TEXTURE, ref_ofs, ROUGHNESS * 8.0).rgb * ref_amount;
 	ALBEDO *= 1.0 - ref_amount;
