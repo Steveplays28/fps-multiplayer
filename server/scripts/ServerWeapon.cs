@@ -79,21 +79,21 @@ public class ServerWeapon : Spatial
 
 	private void ToggleAimDownSight()
 	{
-		SceneTreeTween tween = CreateTween();
+		// SceneTreeTween tween = CreateTween();
 
-		if (isAimingDownSight)
-		{
-			tween.InterpolateProperty(this, "translation", null, initialPosition, AimDownSightSpeed);
-			isAimingDownSight = false;
-		}
-		else
-		{
-			tween.InterpolateProperty(this, "translation", null, AimDownSightPosition, AimDownSightSpeed);
-			isAimingDownSight = true;
-		}
+		// if (isAimingDownSight)
+		// {
+		// 	tween.InterpolateProperty(this, "translation", null, initialPosition, AimDownSightSpeed);
+		// 	isAimingDownSight = false;
+		// }
+		// else
+		// {
+		// 	tween.InterpolateProperty(this, "translation", null, AimDownSightPosition, AimDownSightSpeed);
+		// 	isAimingDownSight = true;
+		// }
 
-		tween.Start();
-		tween.DeleteOnAllCompleted();
+		// tween.Start();
+		// tween.DeleteOnAllCompleted();
 	}
 
 	private void Shoot()
