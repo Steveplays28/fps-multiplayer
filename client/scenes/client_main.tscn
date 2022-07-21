@@ -1,11 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://client/prefabs/clipmap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://client/resources/materials/water.material" type="Material" id=2]
 [ext_resource path="res://client/prefabs/human_reference.tscn" type="PackedScene" id=3]
-[ext_resource path="res://client/prefabs/tree_oak.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/lod/lod_spatial.gd" type="Script" id=5]
-[ext_resource path="res://client/prefabs/tree_oak_lod_1.tscn" type="PackedScene" id=6]
+[ext_resource path="res://client/prefabs/tree_oak/tree_oak_lod.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ProceduralSky" id=3]
 
@@ -397,164 +395,148 @@ height = 2.0
 [node name="HumanReference" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 2, -46 )
 
-[node name="Forest" type="Spatial" parent="."]
+[node name="Forest" type="Node" parent="."]
 
-[node name="OakTree" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 128, 2, -92 )
+[node name="TreeOakLOD" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 160, 0, -32 )
 
-[node name="OakTree2" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 136, 2, -100 )
+[node name="TreeOakLOD2" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 168, 0, -22 )
 
-[node name="OakTree3" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 142, 2, -92 )
+[node name="TreeOakLOD3" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 156, 0, -18 )
 
-[node name="OakTree4" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 2, -98 )
+[node name="TreeOakLOD4" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 170, 0, -38 )
 
-[node name="OakTree5" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 2, -84 )
+[node name="TreeOakLOD5" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 180, 0, -32 )
 
-[node name="OakTree6" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 142, 2, -82 )
+[node name="TreeOakLOD6" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 160, 0, -50 )
 
-[node name="OakTree7" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 132, 2, -84 )
+[node name="TreeOakLOD7" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 174, 0, -56 )
 
-[node name="OakTree8" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 158, 2, -94 )
+[node name="TreeOakLOD8" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 180, 0, -44 )
 
-[node name="OakTree9" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 148.51, 2, -71.366 )
+[node name="TreeOakLOD9" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 145.733, 0, -73.8655 )
 
-[node name="OakTree10" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 159.438, 2, -74.2942 )
+[node name="TreeOakLOD10" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 158.393, 0, -75.7937 )
 
-[node name="OakTree11" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 160.634, 2, -64.366 )
+[node name="TreeOakLOD11" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 155.857, 0, -63.4014 )
 
-[node name="OakTree12" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 168.83, 2, -66.5622 )
+[node name="TreeOakLOD12" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 145.537, 0, -85.5258 )
 
-[node name="OakTree13" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 163.562, 2, -53.4378 )
+[node name="TreeOakLOD13" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 155.733, 0, -91.186 )
 
-[node name="OakTree14" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 155.634, 2, -55.7058 )
+[node name="TreeOakLOD14" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 130.144, 0, -82.8655 )
 
-[node name="OakTree15" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 147.974, 2, -62.4378 )
+[node name="TreeOakLOD15" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 131.948, 0, -97.9899 )
 
-[node name="OakTree16" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 175.49, 2, -58.0981 )
+[node name="TreeOakLOD16" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 145.341, 0, -97.1861 )
 
-[node name="OakTree17" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -5.96046e-08, 0, -1, 0, 1, 0, 1, 0, -5.96046e-08, 167.616, 2, -39.067 )
+[node name="TreeOakLOD17" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 103.613, 0, -80.5796 )
 
-[node name="OakTree18" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -5.96046e-08, 0, -1, 0, 1, 0, 1, 0, -5.96046e-08, 175.616, 2, -31.067 )
+[node name="TreeOakLOD18" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 111.202, 0, -90.8952 )
 
-[node name="OakTree19" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -5.96046e-08, 0, -1, 0, 1, 0, 1, 0, -5.96046e-08, 167.616, 2, -25.067 )
+[node name="TreeOakLOD19" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 118.171, 0, -80.3393 )
 
-[node name="OakTree20" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -5.96046e-08, 0, -1, 0, 1, 0, 1, 0, -5.96046e-08, 173.616, 2, -19.067 )
+[node name="TreeOakLOD25" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 77.6129, 0, -76.5796 )
 
-[node name="OakTree21" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -5.96046e-08, 0, -1, 0, 1, 0, 1, 0, -5.96046e-08, 159.616, 2, -17.067 )
+[node name="TreeOakLOD26" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 85.2017, 0, -86.8952 )
 
-[node name="OakTree22" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -5.96046e-08, 0, -1, 0, 1, 0, 1, 0, -5.96046e-08, 157.616, 2, -25.067 )
+[node name="TreeOakLOD27" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 92.1712, 0, -76.3393 )
 
-[node name="OakTree23" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -5.96046e-08, 0, -1, 0, 1, 0, 1, 0, -5.96046e-08, 159.616, 2, -35.067 )
+[node name="TreeOakLOD28" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 86.278, 0, -98.5151 )
 
-[node name="OakTree24" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -5.96046e-08, 0, -1, 0, 1, 0, 1, 0, -5.96046e-08, 169.616, 2, -9.06699 )
+[node name="TreeOakLOD29" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 98.0078, 0, -103.654 )
 
-[node name="OakTree25" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 151.93, 2, -5.96645 )
+[node name="TreeOakLOD30" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 98.7657, 0, -91.0279 )
 
-[node name="OakTree26" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 151.93, 2, 5.34724 )
+[node name="TreeOakLOD31" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 110.278, 0, -102.515 )
 
-[node name="OakTree27" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 142.03, 2, 3.93304 )
+[node name="TreeOakLOD32" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 122.008, 0, -107.654 )
 
-[node name="OakTree28" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 142.03, 2, 12.4183 )
+[node name="TreeOakLOD33" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 122.766, 0, -95.0279 )
 
-[node name="OakTree29" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 130.717, 2, 3.93304 )
+[node name="TreeOakLOD34" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 133.702, 0, -9.47975 )
 
-[node name="OakTree30" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 134.959, 2, -3.13805 )
+[node name="TreeOakLOD35" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 146.429, 0, -8.06551 )
 
-[node name="OakTree31" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 143.444, 2, -8.7949 )
+[node name="TreeOakLOD36" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 140.773, 0, 3.24818 )
 
-[node name="OakTree32" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 132.131, 2, 16.6609 )
+[node name="TreeOakLOD37" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 163.932, 0, -8.34784 )
 
-[node name="OakTree33" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 121.823, 2, 14.433 )
+[node name="TreeOakLOD38" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 165.86, 0, 4.31242 )
 
-[node name="OakTree34" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 113.823, 2, 22.433 )
+[node name="TreeOakLOD39" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 153.467, 0, 1.7765 )
 
-[node name="OakTree35" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 107.823, 2, 14.433 )
+[node name="TreeOakLOD40" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 129.424, 0, 0.972481 )
 
-[node name="OakTree36" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 101.823, 2, 20.433 )
+[node name="TreeOakLOD41" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 128.01, 0, 13.7004 )
 
-[node name="OakTree37" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 99.8231, 2, 6.43304 )
+[node name="TreeOakLOD42" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 116.697, 0, 8.04354 )
 
-[node name="OakTree38" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 107.823, 2, 4.43302 )
+[node name="TreeOakLOD43" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 107.424, 0, -11.0275 )
 
-[node name="OakTree39" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 117.823, 2, 6.43302 )
+[node name="TreeOakLOD44" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 106.01, 0, 1.7004 )
 
-[node name="OakTree40" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 91.8231, 2, 16.433 )
+[node name="TreeOakLOD45" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 94.6966, 0, -3.95646 )
 
-[node name="OakTree41" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 165.823, 2, 16.433 )
+[node name="TreeOakLOD46" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 2.98023e-08, 0, -1, 0, 1, 0, 1, 0, 2.98023e-08, 110.061, 0, 11.3364 )
 
-[node name="OakTree42" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 163.823, 2, 2.43304 )
+[node name="TreeOakLOD47" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 2.98023e-08, 0, -1, 0, 1, 0, 1, 0, 2.98023e-08, 82.0605, 0, -8.66359 )
 
-[node name="OakTree46" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 159.823, 2, -7.56696 )
+[node name="TreeOakLOD48" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( 2.98023e-08, 0, -1, 0, 1, 0, 1, 0, 2.98023e-08, 96.0605, 0, 7.33644 )
 
-[node name="OakTree43" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 171.823, 2, 0.433022 )
+[node name="TreeOakLOD20" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 186.72, 0, -80.2088 )
 
-[node name="OakTree44" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 181.823, 2, 2.43302 )
+[node name="TreeOakLOD21" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 186.916, 0, -91.8691 )
 
-[node name="OakTree45" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 155.823, 2, 12.433 )
+[node name="TreeOakLOD22" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 181.327, 0, -65.5486 )
 
-[node name="OakTree47" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 97.8231, 2, -85.567 )
+[node name="TreeOakLOD23" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 169.131, 0, -74.6729 )
 
-[node name="OakTree48" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 93.8231, 2, -95.567 )
-
-[node name="OakTree49" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 105.823, 2, -87.567 )
-
-[node name="OakTree50" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 115.823, 2, -85.567 )
-
-[node name="OakTree51" parent="Forest" instance=ExtResource( 4 )]
-transform = Transform( -1, 0, 5.96046e-08, 0, 1, 0, -5.96046e-08, 0, -1, 89.8231, 2, -75.567 )
-
-[node name="LODSpatial" type="Spatial" parent="."]
-script = ExtResource( 5 )
-
-[node name="OakTree-lod0" parent="LODSpatial" instance=ExtResource( 4 )]
-
-[node name="TreeOak-lod1" parent="LODSpatial" instance=ExtResource( 6 )]
+[node name="TreeOakLOD24" parent="Forest" instance=ExtResource( 5 )]
+transform = Transform( -0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 176.524, 0, -85.8691 )

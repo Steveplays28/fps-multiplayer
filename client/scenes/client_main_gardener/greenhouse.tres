@@ -4,8 +4,8 @@
 [ext_resource path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse.gd" type="Script" id=2]
 [ext_resource path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_plant_state.gd" type="Script" id=3]
 [ext_resource path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_plant.gd" type="Script" id=4]
-[ext_resource path="res://client/prefabs/tree_oak.tscn" type="PackedScene" id=5]
-[ext_resource path="res://client/prefabs/tree_oak_lod_1.tscn" type="PackedScene" id=6]
+[ext_resource path="res://client/prefabs/tree_oak/tree_oak_lod_0.tscn" type="PackedScene" id=5]
+[ext_resource path="res://client/prefabs/tree_oak/tree_oak_lod_1.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Resource" id=1]
 resource_name = "Greenhouse_LODVariant"

@@ -5,12 +5,12 @@
 [sub_resource type="SpatialMaterial" id=1157]
 flags_transparent = true
 params_depth_draw_mode = 3
-params_billboard_mode = 1
+params_billboard_mode = 2
 albedo_texture = ExtResource( 1 )
 
 [sub_resource type="QuadMesh" id=3011]
 material = SubResource( 1157 )
-size = Vector2( 10, 10 )
+size = Vector2( 8.5, 8.5 )
 center_offset = Vector3( 0, 5, 0 )
 
 [node name="TreeOakLod1" type="MeshInstance"]
