@@ -36,5 +36,3 @@ func generate():
 			# print("N: %d (X: %d Y: %d Z: %d)" % [i, x, y, z])
 
 			i += 1
-	
-	print(i)
