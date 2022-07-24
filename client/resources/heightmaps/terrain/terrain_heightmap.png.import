@@ -2,21 +2,19 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/terrain_heightmap.png-e2c88f1b84af736d0ddb17e916a49563.s3tc.stex"
-path.etc2="res://.import/terrain_heightmap.png-e2c88f1b84af736d0ddb17e916a49563.etc2.stex"
+path="res://.import/terrain_heightmap.png-e2c88f1b84af736d0ddb17e916a49563.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://client/resources/heightmaps/terrain/terrain_heightmap.png"
-dest_files=[ "res://.import/terrain_heightmap.png-e2c88f1b84af736d0ddb17e916a49563.s3tc.stex", "res://.import/terrain_heightmap.png-e2c88f1b84af736d0ddb17e916a49563.etc2.stex" ]
+dest_files=[ "res://.import/terrain_heightmap.png-e2c88f1b84af736d0ddb17e916a49563.stex" ]
 
 [params]
 
-compress/mode=2
+compress/mode=3
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

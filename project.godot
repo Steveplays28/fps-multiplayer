@@ -9,16 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "ResourceFormatLoader",
-"class": "HTerrainDataLoader",
-"language": "GDScript",
-"path": "res://addons/zylann.hterrain/hterrain_resource_loader.gd"
-}, {
-"base": "ResourceFormatSaver",
-"class": "HTerrainDataSaver",
-"language": "GDScript",
-"path": "res://addons/zylann.hterrain/hterrain_resource_saver.gd"
-}, {
 "base": "CPUParticles",
 "class": "LODCPUParticles",
 "language": "GDScript",
@@ -45,8 +35,6 @@ _global_script_classes=[ {
 "path": "res://addons/lod/lod_spot_light.gd"
 } ]
 _global_script_class_icons={
-"HTerrainDataLoader": "",
-"HTerrainDataSaver": "",
 "LODCPUParticles": "res://addons/lod/lod_cpu_particles.svg",
 "LODOmniLight": "res://addons/lod/lod_omni_light.svg",
 "LODParticles": "res://addons/lod/lod_particles.svg",
@@ -63,6 +51,7 @@ config/icon="res://icon.png"
 
 [debug]
 
+gdscript/warnings/integer_division=false
 multirun/number_of_windows=2
 multirun/window_distance=700
 multirun/add_custom_args=true
@@ -84,7 +73,7 @@ main_run_args="--client"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/multirun/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/lod/plugin.cfg", "res://addons/multirun/plugin.cfg" )
 
 [input]
 
@@ -149,6 +138,10 @@ sprint={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[network]
+
+limits/debugger_stdout/max_chars_per_second=8192
 
 [physics]
 
