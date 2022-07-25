@@ -1,6 +1,11 @@
 # Unnamed multiplayer FPS game  
 Made in Godot, uses the [NExLib](https://github.com/steveplays28/nexlib) library for multiplayer networking.
 
+Still very much work in progress, this readme will be updated with images, extra info, and more once it's ready for that.  
+This is going to be a multiplayer first person shooter (fps), with the movement system most likely being a blend between Rainbow Six Siege's slower paced movement and Titanfall 2's fast paced movement.
+
+For now, feel free to have a look at the code!
+
 ## License  
 The game's source code is licensed under the MIT License, see LICENSE.
 
