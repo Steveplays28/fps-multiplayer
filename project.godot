@@ -80,7 +80,7 @@ main_run_args="--client"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/draw3d/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/multirun/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/draw3d/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/multirun/plugin.cfg", "res://addons/tool_button/plugin.cfg" )
 
 [input]
 
@@ -145,6 +145,10 @@ sprint={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[mono]
+
+runtime/unhandled_exception_policy=1
 
 [network]
 
