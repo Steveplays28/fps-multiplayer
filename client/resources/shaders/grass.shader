@@ -13,15 +13,17 @@ uniform vec3 uv1_scale = vec3(1.0);
 uniform vec3 uv1_offset;
 
 uniform sampler2D wave_noise_map;
-uniform float wave_speed : hint_range(0, 10) = 1.0;
+uniform float wave_speed : hint_range(0, 100) = 1.0;
 uniform float wave_amount : hint_range(0, 10) = 1.0;
 uniform vec2 wave_direction = vec2(1);
 
 void vertex() {
 	UV = UV * uv1_scale.xy + uv1_offset.xy;
-	
+
+	vec3 world_pos = (WORLD_MATRIX * vec4(VERTEX, 1.0)).xyz;
+
 	vec2 wave_direction_normalized = normalize(wave_direction);
-	VERTEX.xz += wave_direction_normalized * sin(TIME * wave_speed) * wave_amount * (1.0 - UV.y);
+	VERTEX.xz += wave_direction_normalized * sin(TIME * normalize(world_pos).y * wave_speed) * wave_amount * (1.0 - UV.y);
 }
 
 void fragment() {
