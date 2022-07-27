@@ -13,3 +13,8 @@ The game's art assets (including, but not limited to, all files in the `*/resour
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 [NExLib](https://github.com/steveplays28/nexlib) is licensed under the LGPL-2.0 license, see LICENSE in the NExLib GitHub repository.
+
+## Development  
+This project uses Godot 3.5 rc6 (Mono) as of the latest commits. Older versions used Godot 3.4 (Mono).  
+
+This section will be updated to add development setup and more once this project is ready for it, see the top section.
