@@ -97,7 +97,7 @@ main_run_args="--client"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/draw3d/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/multirun/plugin.cfg", "res://addons/tool_button/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/draw3d/plugin.cfg", "res://addons/lod/plugin.cfg", "res://addons/multirun/plugin.cfg", "res://addons/soft_reload_tool_scripts/plugin.cfg", "res://addons/tool_button/plugin.cfg" )
 
 [input]
 
