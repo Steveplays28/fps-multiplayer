@@ -4,13 +4,13 @@ extends MultiMeshInstance
 
 export var width := 100.0
 export var length := 100.0
-export(float, 0, 100) var spacing : float = 10
-export(float, 0, 100) var position_variation : float = 0.5
-export(float, 0, 360) var rotation_variation_degrees : float = 45
-export(float, 0, 100) var height_min : float = 0.75
-export(float, 0, 100) var height_max : float = 1.25
+export(float, 0, 100) var spacing : float = 1.0
+export(float, 0, 100) var position_variation : float = 2.0
+export(float, 0, 360) var rotation_variation_degrees : float = 45.0
+export(float, 0, 100) var height_min : float = 0.25
+export(float, 0, 100) var height_max : float = 1.0
 export(Texture) var heightmap : Texture
-export(float, 0.1, 100) var height_scale : float = 1
+export(float, 0.1, 100) var height_scale : float = 1.0
 export(float, 0, 1) var cutoff_height : float = 0.75
 
 func _get_tool_buttons():
@@ -26,13 +26,11 @@ func generate():
 	var heightmap_image := heightmap.get_data()
 	heightmap_image.lock()
 
-	var instance_count_per_axis := floor(sqrt((multimesh as MultiMesh).instance_count))
-	var instance_count := instance_count_per_axis * instance_count_per_axis
-	(multimesh as MultiMesh).instance_count = instance_count
+	(multimesh as MultiMesh).instance_count = width * length
 
 	var i := 0
-	for instance_count_x in instance_count_per_axis:
-		for instance_count_z in instance_count_per_axis:
+	for instance_count_x in width:
+		for instance_count_z in length:
 			var x : float = instance_count_x * spacing + rand_range(-position_variation, position_variation)
 			var instance_height = rand_range(height_min, height_max)
 			var y : float = (instance_height - 1) / 2
@@ -40,7 +38,7 @@ func generate():
 				y = (instance_height - 1)
 			var z : float = instance_count_z * spacing + rand_range(-position_variation, position_variation)
 
-			var pixel := Vector2(round(heightmap_image.get_width() / instance_count_per_axis * instance_count_x), round(heightmap_image.get_height() / instance_count_per_axis * instance_count_z))
+			var pixel := Vector2(round(heightmap_image.get_width() / width * instance_count_x), round(heightmap_image.get_height() / length * instance_count_z))
 			var image_data = heightmap_image.get_pixelv(pixel)
 			y += image_data.get_luminance() * height_scale - height_scale / 2
 
