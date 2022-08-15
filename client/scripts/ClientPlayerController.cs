@@ -27,19 +27,9 @@ public class ClientPlayerController : Spatial
 		base._Process(delta);
 
 		HandleMouseCursorVisibilityInput();
+		HandleDashInput();
 
-		using (Packet packet = new Packet((int)PacketConnectedMethodExtension.Input))
-		{
-			packet.Writer.Write(Input.IsActionPressed("move_forward"));
-			packet.Writer.Write(Input.IsActionPressed("move_backwards"));
-			packet.Writer.Write(Input.IsActionPressed("move_right"));
-			packet.Writer.Write(Input.IsActionPressed("move_left"));
-			packet.Writer.Write(Input.IsActionPressed("sprint"));
-			packet.Writer.Write(Input.IsActionPressed("slide"));
-			packet.Writer.Write(Input.IsActionJustPressed("jump"));
-
-			ClientReferenceManager.ClientManager.Client.SendPacket(packet);
-		}
+		SendInputPacket();
 	}
 
 	public override void _UnhandledInput(InputEvent inputEvent)
@@ -50,6 +40,33 @@ public class ClientPlayerController : Spatial
 		{
 			InputEventMouseMotion inputEventMouseMotion = inputEvent as InputEventMouseMotion;
 			HandleMouseInput(inputEventMouseMotion);
+		}
+	}
+
+	private void HandlePositionPacket(Packet packet, IPEndPoint serverIPEndPoint)
+	{
+		if (packet.ConnectedMethod != (int)PacketTypes.Input)
+		{
+			return;
+		}
+
+		Translation = packet.Reader.ReadVector3();
+	}
+
+	private void SendInputPacket()
+	{
+		using (Packet packet = new Packet((int)PacketTypes.Input))
+		{
+			packet.Writer.Write(Input.IsActionPressed("move_forward"));
+			packet.Writer.Write(Input.IsActionPressed("move_backwards"));
+			packet.Writer.Write(Input.IsActionPressed("move_right"));
+			packet.Writer.Write(Input.IsActionPressed("move_left"));
+			packet.Writer.Write(Input.IsActionPressed("sprint"));
+			packet.Writer.Write(Input.IsActionPressed("slide"));
+			packet.Writer.Write(Input.IsActionJustPressed("jump"));
+			packet.Writer.Write(Input.IsActionJustPressed("dash"));
+
+			ClientReferenceManager.ClientManager.Client.SendPacket(packet);
 		}
 	}
 
@@ -83,7 +100,7 @@ public class ClientPlayerController : Spatial
 		camera.RotationDegrees = cameraRotationClamped;
 
 		// Send mouse input packet to server
-		using (Packet packet = new Packet((int)PacketConnectedMethodExtension.MouseInput))
+		using (Packet packet = new Packet((int)PacketTypes.MouseInput))
 		{
 			packet.Writer.Write(-inputEventMouseMotion.Relative.y * Sensitivity.x);
 			packet.Writer.Write(-inputEventMouseMotion.Relative.x * Sensitivity.y);
@@ -92,13 +109,8 @@ public class ClientPlayerController : Spatial
 		}
 	}
 
-	private void HandlePositionPacket(Packet packet, IPEndPoint serverIPEndPoint)
+	private void HandleDashInput()
 	{
-		if (packet.ConnectedMethod != (int)PacketConnectedMethodExtension.Input)
-		{
-			return;
-		}
-
-		Translation = packet.Reader.ReadVector3();
+		// TODO: Clientside dash event
 	}
 }

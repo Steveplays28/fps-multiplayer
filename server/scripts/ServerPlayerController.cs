@@ -18,12 +18,15 @@ public class ServerPlayerController : KinematicBody
 	[Export] public float JumpLength = 0.25f;
 	[Export] public float JumpSpeed = 100f;
 	[Export] public int JumpAmount = 2;
+	[Export] public float DashLength = 0.25f;
+	[Export] public float DashSpeed = 100f;
+	[Export] public int DashAmount = 2;
 	[Export(PropertyHint.Range, "0, 100")] public float CameraRollMultiplier = 0.1f;
 	[Export(PropertyHint.Range, "0, 100")] public float CameraRollSpeed = 0.1f;
 	[Export(PropertyHint.Range, "0, 100")] public float ClimbHeight = 10f;
 	[Export(PropertyHint.Range, "0, 100")] public float ClimbLunge = 10f;
+
 	[Export] private readonly NodePath CameraNodePath = nameof(Camera);
-	[Export] private readonly string AnimationTreeNodePath;
 	[Export] private readonly NodePath FloorRayCastNodePath;
 	[Export] private readonly NodePath ClimbRayCastNodePath;
 
@@ -32,23 +35,40 @@ public class ServerPlayerController : KinematicBody
 	public Vector3 VelocityLocal { get; private set; } = Vector3.Zero;
 	public bool IsJumping { get; private set; } = false;
 	public bool IsSliding { get; private set; } = false;
+	public bool IsDashing { get; private set; } = false;
 
 	private Camera camera;
-	private AnimationTree animationTree;
 	private RayCast floorRayCast;
 	private RayCast climbRayCast;
-	private float jumpTimeLeft;
-	private int jumpsLeft;
 	private Vector3 targetVelocity;
+	private int jumpsLeft;
+	private float jumpTimeLeft;
+	private int dashesLeft;
+	private float dashTimeLeft;
+
+	private bool[] movementActions = new bool[8];
+	private Vector3 inputDirection;
+	private Vector3 slideDirection;
+
+	private enum MovementActions
+	{
+		MoveForward,
+		MoveBackwards,
+		MoveRight,
+		MoveLeft,
+		Sprint,
+		Slide,
+		Jump,
+		Dash
+	}
 
 	public override void _Ready()
 	{
 		camera = GetNode<Camera>(CameraNodePath);
-		animationTree = GetNode<AnimationTree>(AnimationTreeNodePath);
 		floorRayCast = GetNode<RayCast>(FloorRayCastNodePath);
 		climbRayCast = GetNode<RayCast>(ClimbRayCastNodePath);
 
-		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleMovementInputPacket;
+		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleInputPacket;
 		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleMouseInputPacket;
 	}
 
@@ -59,11 +79,10 @@ public class ServerPlayerController : KinematicBody
 		// HandleRestartInput();
 
 		HandleGravity(delta);
-		HandleSlideInput();
-		HandleJumpInput(delta);
 		HandleClimb();
 
 		ApplyVelocity(delta);
+		SendPositionPacket();
 	}
 
 
@@ -77,43 +96,6 @@ public class ServerPlayerController : KinematicBody
 		return Velocity.Rotated(Vector3.Up, Rotation.y);
 	}
 
-	private void ApplyVelocity(float delta)
-	{
-		float acceleration = IsGrounded() ? Acceleration : AirAcceleration;
-		Velocity = new Vector3(Mathf.Lerp(Velocity.x, targetVelocity.x, acceleration * delta), targetVelocity.y, targetVelocity.z);
-		Velocity = new Vector3(targetVelocity.x, targetVelocity.y, Mathf.Lerp(Velocity.z, targetVelocity.z, acceleration * delta));
-
-		if (IsJumping)
-		{
-			Velocity = MoveAndSlide(Velocity, Transform.basis.y, true);
-		}
-		else
-		{
-			Velocity = MoveAndSlideWithSnap(Velocity, Transform.basis.y * -2f, Transform.basis.y, true);
-
-			float idle_walk_blend_amount = (float)animationTree.Get("parameters/idle_walk_blend/blend_amount");
-			if (Velocity.Abs().Length() > 0.1f)
-			{
-				animationTree.Set("parameters/idle_walk_blend/blend_amount", Mathf.Clamp(idle_walk_blend_amount + delta, 0f, 1f));
-				animationTree.Set("parameters/time_scale/scale", GetLocalVelocity().Length() / MaxMovementSpeed / 2f);
-			}
-			else
-			{
-				animationTree.Set("parameters/idle_walk_blend/blend_amount", Mathf.Clamp(idle_walk_blend_amount - delta, 0f, 1f));
-
-				float time_scale = (float)animationTree.Get("parameters/time_scale/scale");
-				animationTree.Set("parameters/time_scale/scale", Mathf.Clamp(time_scale + delta, 0f, 1f));
-			}
-		}
-
-		using (Packet packet = new Packet((int)PacketConnectedMethodExtension.Input))
-		{
-			packet.Writer.Write(GlobalTransform.origin);
-
-			ServerReferenceManager.ServerManager.Server.SendPacketTo(packet, ClientId);
-		}
-	}
-
 	private void HandleRestartInput()
 	{
 		if (Input.IsActionJustPressed("restart"))
@@ -124,7 +106,7 @@ public class ServerPlayerController : KinematicBody
 
 	private void HandleMouseInputPacket(Packet packet, IPEndPoint clientIpEndPoint)
 	{
-		if (packet.ConnectedMethod != (int)PacketConnectedMethodExtension.MouseInput)
+		if (packet.ConnectedMethod != (int)PacketTypes.MouseInput)
 		{
 			return;
 		}
@@ -155,35 +137,28 @@ public class ServerPlayerController : KinematicBody
 		}
 	}
 
-	private void HandleSlideInput()
+	private void HandleClimb()
 	{
-		if (Input.IsActionJustPressed("slide"))
+		if (climbRayCast.IsColliding() && Mathf.Rad2Deg(climbRayCast.GetCollisionNormal().AngleTo(Vector3.Up)) >= 90f)
 		{
-			IsSliding = true;
-		}
-		if (Input.IsActionJustReleased("slide"))
-		{
-			IsSliding = false;
+			targetVelocity = Transform.basis.y * ClimbHeight - Transform.basis.z * ClimbLunge;
 		}
 	}
 
-	private void HandleMovementInputPacket(Packet packet, IPEndPoint clientIPEndPoint)
+	private void HandleInputPacket(Packet packet, IPEndPoint clientIPEndPoint)
 	{
-		if (packet.ConnectedMethod != (int)PacketConnectedMethodExtension.Input)
+		if (packet.ConnectedMethod != (int)PacketTypes.Input)
 		{
 			return;
 		}
 
-		bool moveForwardActionPressed = packet.Reader.ReadBoolean();
-		bool moveBackwardsActionPressed = packet.Reader.ReadBoolean();
-		bool moveRightActionPressed = packet.Reader.ReadBoolean();
-		bool moveLeftActionPressed = packet.Reader.ReadBoolean();
-		bool sprintActionPressed = packet.Reader.ReadBoolean();
-		bool slideActionPressed = packet.Reader.ReadBoolean();
-		bool jumpActionPressed = packet.Reader.ReadBoolean();
+		for (int i = 0; i < movementActions.Length; i++)
+		{
+			movementActions[i] = packet.Reader.ReadBoolean();
+		}
 
 		float maxMovementSpeed;
-		if (sprintActionPressed)
+		if (movementActions[(int)MovementActions.Sprint])
 		{
 			maxMovementSpeed = MaxSprintMovementSpeed;
 		}
@@ -192,62 +167,68 @@ public class ServerPlayerController : KinematicBody
 			maxMovementSpeed = MaxMovementSpeed;
 		}
 
-		Vector3 inputDirection = Vector3.Zero;
+		inputDirection = Vector3.Zero;
+		targetVelocity = Vector3.Zero;
 		Vector3 cameraRotationDegrees = camera.RotationDegrees;
 		if (!IsSliding)
 		{
-			if (moveForwardActionPressed)
-			{
-				inputDirection -= Transform.basis.z;
-			}
-			if (moveBackwardsActionPressed)
-			{
-				inputDirection += Transform.basis.z;
-			}
-			if (moveRightActionPressed)
-			{
-				inputDirection += Transform.basis.x;
+			inputDirection += (movementActions[(int)MovementActions.MoveForward] ? Transform.basis.z : Vector3.Zero) + (movementActions[(int)MovementActions.MoveBackwards] ? -Transform.basis.z : Vector3.Zero);
+			inputDirection += (movementActions[(int)MovementActions.MoveRight] ? Transform.basis.x : Vector3.Zero) + (movementActions[(int)MovementActions.MoveLeft] ? -Transform.basis.x : Vector3.Zero);
 
-				cameraRotationDegrees.z = Mathf.Lerp(cameraRotationDegrees.z, Mathf.Clamp(cameraRotationDegrees.z - CameraRollSpeed * maxMovementSpeed, -CameraRollMultiplier * maxMovementSpeed, CameraRollMultiplier * maxMovementSpeed), CameraRollSpeed);
-			}
-			if (moveLeftActionPressed)
-			{
-				inputDirection -= Transform.basis.x;
-
-				cameraRotationDegrees.z = Mathf.Lerp(cameraRotationDegrees.z, Mathf.Clamp(cameraRotationDegrees.z + CameraRollSpeed * maxMovementSpeed, -CameraRollMultiplier * maxMovementSpeed, CameraRollMultiplier * maxMovementSpeed), CameraRollSpeed);
-			}
-		}
-		if (!moveRightActionPressed && !moveLeftActionPressed)
-		{
-			cameraRotationDegrees.z = Mathf.Lerp(camera.RotationDegrees.z, 0f, CameraRollSpeed);
+			cameraRotationDegrees.z = Mathf.Lerp(cameraRotationDegrees.z, Mathf.Clamp(cameraRotationDegrees.z + CameraRollSpeed * maxMovementSpeed * inputDirection.x, -CameraRollMultiplier * maxMovementSpeed, CameraRollMultiplier * maxMovementSpeed), CameraRollSpeed);
 		}
 
 		camera.RotationDegrees = cameraRotationDegrees;
-		inputDirection = inputDirection.Normalized();
-		targetVelocity += inputDirection * maxMovementSpeed;
+		targetVelocity = inputDirection * maxMovementSpeed;
 
-		float decceleration = IsSliding ? SlideDecceleration : Decceleration;
-		decceleration = IsGrounded() ? decceleration : AirDecceleration;
-		if (inputDirection.x == 0f)
-		{
-			targetVelocity = new Vector3(Mathf.Lerp(targetVelocity.x, 0f, decceleration * GetProcessDeltaTime()), targetVelocity.y, targetVelocity.z);
-		}
-		if (inputDirection.z == 0f)
-		{
-			targetVelocity = new Vector3(targetVelocity.x, targetVelocity.y, Mathf.Lerp(targetVelocity.z, 0f, decceleration * GetProcessDeltaTime()));
-		}
+		// if (targetVelocity.Length() > maxMovementSpeed)
+		// {
+		// 	float targetVelocityY = targetVelocity.y;
+		// 	targetVelocity = targetVelocity.Normalized() * maxMovementSpeed;
+		// 	targetVelocity.y = targetVelocityY;
+		// }
 
-		if (targetVelocity.Length() > maxMovementSpeed)
+		if (movementActions[(int)MovementActions.Jump])
 		{
-			float targetVelocityY = targetVelocity.y;
-			targetVelocity = targetVelocity.Normalized() * maxMovementSpeed;
-			targetVelocity.y = targetVelocityY;
+			Jump();
+		}
+		if (movementActions[(int)MovementActions.Slide])
+		{
+			Slide();
+		}
+		if (movementActions[(int)MovementActions.Dash])
+		{
+			Dash();
 		}
 	}
 
-	private void HandleJumpInput(float delta)
+	private void ApplyVelocity(float delta)
 	{
-		if (Input.IsActionJustPressed("jump") && jumpsLeft > 0)
+		float maxMovementSpeed = movementActions[(int)MovementActions.Sprint] ? MaxSprintMovementSpeed : MaxMovementSpeed;
+		targetVelocity = inputDirection * maxMovementSpeed;
+
+		float acceleration = IsGrounded() ? Acceleration : AirAcceleration;
+		Velocity = new Vector3(Mathf.Lerp(Velocity.x, targetVelocity.x, acceleration * delta), targetVelocity.y, Mathf.Lerp(Velocity.z, targetVelocity.z, acceleration * delta));
+
+		float decceleration = IsSliding ? SlideDecceleration : Decceleration;
+		decceleration = IsGrounded() ? decceleration : AirDecceleration;
+
+		Velocity = IsJumping ? MoveAndSlide(Velocity, Transform.basis.y, true) : MoveAndSlideWithSnap(Velocity, Transform.basis.y * -2f, Transform.basis.y, true);
+	}
+
+	private void SendPositionPacket()
+	{
+		using (Packet packet = new Packet((int)PacketTypes.Input))
+		{
+			packet.Writer.Write(GlobalTransform.origin);
+
+			ServerReferenceManager.ServerManager.Server.SendPacketTo(packet, ClientId);
+		}
+	}
+
+	private void Jump()
+	{
+		if (jumpsLeft > 0)
 		{
 			IsJumping = true;
 			jumpTimeLeft = JumpLength;
@@ -259,7 +240,7 @@ public class ServerPlayerController : KinematicBody
 			if (jumpTimeLeft > 0)
 			{
 				targetVelocity = new Vector3(targetVelocity.x, JumpSpeed * jumpTimeLeft, targetVelocity.z);
-				jumpTimeLeft -= delta;
+				jumpTimeLeft -= GetProcessDeltaTime();
 			}
 			else
 			{
@@ -268,11 +249,32 @@ public class ServerPlayerController : KinematicBody
 		}
 	}
 
-	private void HandleClimb()
+	private void Slide()
 	{
-		if (climbRayCast.IsColliding() && Mathf.Rad2Deg(climbRayCast.GetCollisionNormal().AngleTo(Vector3.Up)) >= 90f)
+		IsSliding = !IsSliding;
+		slideDirection = inputDirection;
+	}
+
+	private void Dash()
+	{
+		if (dashesLeft > 0)
 		{
-			targetVelocity = Transform.basis.y * ClimbHeight - Transform.basis.z * ClimbLunge;
+			IsDashing = true;
+			dashTimeLeft = DashLength;
+			dashesLeft -= 1;
+		}
+
+		if (IsDashing)
+		{
+			if (dashTimeLeft > 0)
+			{
+				targetVelocity = inputDirection * DashSpeed;
+				dashTimeLeft -= GetProcessDeltaTime();
+			}
+			else
+			{
+				IsDashing = false;
+			}
 		}
 	}
 }
