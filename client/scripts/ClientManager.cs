@@ -86,7 +86,7 @@ public class ClientManager : Node
 		Client.Connect(ServerIp, ServerPort);
 	}
 
-	private void Connected(Packet packet, IPEndPoint serverIPEndPoint)
+	private void Connected(Packet packet)
 	{
 		ClientPlayerController player = ClientPlayer.Instance<ClientPlayerController>();
 		GetTree().Root.AddChild(player);
@@ -96,7 +96,7 @@ public class ClientManager : Node
 		Players.Add(clientId, player);
 	}
 
-	private void Disconnected(Packet packet, IPEndPoint serverIPEndPoint)
+	private void Disconnected(Packet packet)
 	{
 		int clientId = packet.Reader.ReadInt32();
 

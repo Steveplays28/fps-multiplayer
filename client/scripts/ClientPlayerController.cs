@@ -19,7 +19,7 @@ public class ClientPlayerController : Spatial
 
 		camera = GetNode<Camera>(CameraNodePath);
 
-		ClientReferenceManager.ClientManager.Client.PacketReceived += HandlePositionPacket;
+		ClientReferenceManager.ClientManager.Client.Listen((int)PacketTypes.Input, ReceivePositionPacket);
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -43,13 +43,8 @@ public class ClientPlayerController : Spatial
 		}
 	}
 
-	private void HandlePositionPacket(Packet packet, IPEndPoint serverIPEndPoint)
+	private void ReceivePositionPacket(Packet packet)
 	{
-		if (packet.ConnectedMethod != (int)PacketTypes.Input)
-		{
-			return;
-		}
-
 		Translation = packet.Reader.ReadVector3();
 	}
 

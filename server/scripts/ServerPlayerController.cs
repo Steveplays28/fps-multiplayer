@@ -46,7 +46,7 @@ public class ServerPlayerController : KinematicBody
 	private int dashesLeft;
 	private float dashTimeLeft;
 
-	private bool[] movementActions = new bool[8];
+	private readonly bool[] movementActions = new bool[8];
 	private Vector3 inputDirection;
 	private Vector3 slideDirection;
 
@@ -68,18 +68,16 @@ public class ServerPlayerController : KinematicBody
 		floorRayCast = GetNode<RayCast>(FloorRayCastNodePath);
 		climbRayCast = GetNode<RayCast>(ClimbRayCastNodePath);
 
-		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleInputPacket;
-		ServerReferenceManager.ServerManager.Server.PacketReceived += HandleMouseInputPacket;
+		ServerReferenceManager.ServerManager.Server.Listen((int)PacketTypes.Input, ReceiveInputPacket);
+		ServerReferenceManager.ServerManager.Server.Listen((int)PacketTypes.MouseInput, ReceiveMouseInputPacket);
 	}
 
 	public override void _PhysicsProcess(float delta)
 	{
 		base._PhysicsProcess(delta);
 
-		// HandleRestartInput();
-
-		HandleGravity(delta);
-		HandleClimb();
+		ApplyGravity(delta);
+		Climb();
 
 		ApplyVelocity(delta);
 		SendPositionPacket();
@@ -104,13 +102,29 @@ public class ServerPlayerController : KinematicBody
 		}
 	}
 
-	private void HandleMouseInputPacket(Packet packet, IPEndPoint clientIpEndPoint)
+	private void ApplyGravity(float delta)
 	{
-		if (packet.ConnectedMethod != (int)PacketTypes.MouseInput)
+		if (!IsGrounded())
 		{
-			return;
+			targetVelocity += Gravity * Mass * GravityScale * delta;
 		}
+		else if (targetVelocity.y < 0f)
+		{
+			targetVelocity.y = 0f;
+			jumpsLeft = JumpAmount;
+		}
+	}
 
+	private void Climb()
+	{
+		if (climbRayCast.IsColliding() && Mathf.Rad2Deg(climbRayCast.GetCollisionNormal().AngleTo(Vector3.Up)) >= 90f)
+		{
+			targetVelocity = Transform.basis.y * ClimbHeight - Transform.basis.z * ClimbLunge;
+		}
+	}
+
+	private void ReceiveMouseInputPacket(Packet packet, IPEndPoint clientIpEndPoint)
+	{
 		// Read mouse input packet
 		Vector2 mouseMotion = packet.Reader.ReadVector2();
 
@@ -124,34 +138,8 @@ public class ServerPlayerController : KinematicBody
 		camera.RotationDegrees = cameraRotationClamped;
 	}
 
-	private void HandleGravity(float delta)
+	private void ReceiveInputPacket(Packet packet, IPEndPoint clientIPEndPoint)
 	{
-		if (!IsGrounded())
-		{
-			targetVelocity += Gravity * Mass * GravityScale * delta;
-		}
-		else if (targetVelocity.y < 0f)
-		{
-			targetVelocity.y = 0f;
-			jumpsLeft = JumpAmount;
-		}
-	}
-
-	private void HandleClimb()
-	{
-		if (climbRayCast.IsColliding() && Mathf.Rad2Deg(climbRayCast.GetCollisionNormal().AngleTo(Vector3.Up)) >= 90f)
-		{
-			targetVelocity = Transform.basis.y * ClimbHeight - Transform.basis.z * ClimbLunge;
-		}
-	}
-
-	private void HandleInputPacket(Packet packet, IPEndPoint clientIPEndPoint)
-	{
-		if (packet.ConnectedMethod != (int)PacketTypes.Input)
-		{
-			return;
-		}
-
 		for (int i = 0; i < movementActions.Length; i++)
 		{
 			movementActions[i] = packet.Reader.ReadBoolean();
@@ -222,7 +210,7 @@ public class ServerPlayerController : KinematicBody
 		{
 			packet.Writer.Write(GlobalTransform.origin);
 
-			ServerReferenceManager.ServerManager.Server.SendPacketTo(packet, ClientId);
+			ServerReferenceManager.ServerManager.Server.SendPacket(packet, ClientId);
 		}
 	}
 

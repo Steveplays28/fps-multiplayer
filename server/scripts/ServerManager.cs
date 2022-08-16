@@ -1,11 +1,11 @@
+using System.Net;
 using Godot;
 using NExLib.Common;
 using NExLib.Server;
 
 public class ServerManager : Node
 {
-	[Export(PropertyHint.Range, "0,65535")] public int ServerPort = 26665;
-
+	[Export(PropertyHint.Range, "0,65535")] public int Port = 26665;
 	public Server Server { get; private set; }
 
 	private Label label;
@@ -16,10 +16,11 @@ public class ServerManager : Node
 
 		label = GetNode<Label>("DebugLabel");
 
-		Server = new Server(ServerPort);
+		Server = new Server();
 		Server.LogHelper.Log += Log;
-		// TODO: Add client connect and client disconnect events
-		Server.Start();
+		Server.Connected += OnConnected;
+		Server.Disconnected += OnDisconnected;
+		Server.Start(Port);
 	}
 
 	public override void _Process(float delta)
@@ -56,5 +57,15 @@ public class ServerManager : Node
 			GD.PushError(logMessage);
 			label.Text += $"{logMessage}\n";
 		}
+	}
+
+	private void OnConnected(Packet packet, IPEndPoint IPEndPoint)
+	{
+		// TODO: Spawn player
+	}
+
+	private void OnDisconnected(Packet packet, IPEndPoint IPEndPoint)
+	{
+		// TODO: Despawn player
 	}
 }
