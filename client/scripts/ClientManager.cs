@@ -23,12 +23,13 @@ public class ClientManager : Node
 		label = GetNode<Label>("Label");
 		connectButton = GetNode<Button>("ConnectButton");
 
-		connectButton.Connect("pressed", this, nameof(ConnectButtonPressed));
+		connectButton.Connect("pressed", this, nameof(Connect));
 
 		Client = new Client();
 		Client.LogHelper.Log += Log;
-		Client.Connected += Connected;
-		Client.Disconnected += Disconnected;
+		Client.Listen((int)DefaultPacketTypes.Connect, OnConnected);
+		Client.Listen((int)DefaultPacketTypes.Disconnect, OnDisconnected);
+		Client.Start();
 	}
 
 	public override void _Process(float delta)
@@ -81,12 +82,12 @@ public class ClientManager : Node
 		}
 	}
 
-	private void ConnectButtonPressed()
+	private void Connect()
 	{
 		Client.Connect(ServerIp, ServerPort);
 	}
 
-	private void Connected(Packet packet)
+	private void OnConnected(Packet packet)
 	{
 		ClientPlayerController player = ClientPlayer.Instance<ClientPlayerController>();
 		GetTree().Root.AddChild(player);
@@ -96,7 +97,7 @@ public class ClientManager : Node
 		Players.Add(clientId, player);
 	}
 
-	private void Disconnected(Packet packet)
+	private void OnDisconnected(Packet packet)
 	{
 		int clientId = packet.Reader.ReadInt32();
 

@@ -18,8 +18,8 @@ public class ServerManager : Node
 
 		Server = new Server();
 		Server.LogHelper.Log += Log;
-		Server.Connected += OnConnected;
-		Server.Disconnected += OnDisconnected;
+		Server.Listen((int)DefaultPacketTypes.Connect, OnConnected);
+		Server.Listen((int)DefaultPacketTypes.Disconnect, OnDisconnected);
 		Server.Start(Port);
 	}
 
